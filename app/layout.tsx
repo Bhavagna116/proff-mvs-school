@@ -115,7 +115,11 @@ export const metadata: Metadata = {
     apple: [{ url: "/logo.png", sizes: "180x180", type: "image/png" }],
     shortcut: ["/logo.png"],
   },
+  verification: {
+    google: "googlef4595adaa8cfbd74",
+  },
   other: {
+    "google-site-verification": "googlef4595adaa8cfbd74",
     "geo.region": "IN-AP",
     "geo.placename": "Mandapeta",
     "geo.position": "16.8687;81.9312",
