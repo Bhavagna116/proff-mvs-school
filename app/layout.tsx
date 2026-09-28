@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -13,9 +13,213 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mvsschool-mandapeta.edu.in";
+
+export const viewport: Viewport = {
+  themeColor: "#ea580c",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
-  title: "Proff. MVS Koteswara Rao Memorial Public School - Official Portal",
-  description: "Official Campus Portal for Proff. MVS Koteswara Rao Memorial Public School, Mandapeta",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Proff. MVS Koteswara Rao Memorial Public School | Mandapeta",
+    template: "%s | Proff. MVS Koteswara Rao Memorial Public School",
+  },
+  description:
+    "Official portal for Proff. MVS Koteswara Rao Memorial Public School, Mandapeta, Andhra Pradesh. Offering English medium pre-primary, primary, middle & high school education with holistic development and modern facilities. Admissions Open 2026-27.",
+  applicationName: "Proff. MVS Koteswara Rao Memorial Public School",
+  authors: [
+    {
+      name: "Proff. MVS Koteswara Rao Memorial Public School",
+      url: baseUrl,
+    },
+  ],
+  generator: "Next.js",
+  keywords: [
+    "Proff. MVS Koteswara Rao Memorial Public School",
+    "MVS School Mandapeta",
+    "MVS Public School Mandapeta",
+    "Best school in Mandapeta",
+    "Schools in Mandapeta",
+    "English Medium School Mandapeta",
+    "Primary School Mandapeta",
+    "High School Mandapeta",
+    "School admissions Mandapeta",
+    "Admissions Open 2026-27 Mandapeta",
+    "Quality education Mandapeta",
+    "Konaseema schools",
+    "East Godavari schools Andhra Pradesh",
+    "Top rated schools in Mandapeta AP",
+  ],
+  creator: "Proff. MVS Koteswara Rao Memorial Public School",
+  publisher: "Proff. MVS Koteswara Rao Memorial Public School",
+  category: "education",
+  formatDetection: {
+    email: true,
+    address: true,
+    telephone: true,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: baseUrl,
+    siteName: "Proff. MVS Koteswara Rao Memorial Public School",
+    title: "Proff. MVS Koteswara Rao Memorial Public School | Mandapeta",
+    description:
+      "Continuing the legacy of quality education. Nurturing the leaders of tomorrow with holistic development, values, and modern curriculum in Mandapeta, AP. Admissions Open 2026-27.",
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "Proff. MVS Koteswara Rao Memorial Public School Crest Logo",
+      },
+      {
+        url: "/event-1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Students and campus activities at Proff. MVS Koteswara Rao Memorial Public School",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Proff. MVS Koteswara Rao Memorial Public School | Mandapeta",
+    description:
+      "Quality English Medium education in Mandapeta, AP. Admissions Open 2026-27. Nurturing future leaders.",
+    images: ["/event-1.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/logo.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/logo.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/logo.png"],
+  },
+  other: {
+    "geo.region": "IN-AP",
+    "geo.placename": "Mandapeta",
+    "geo.position": "16.8687;81.9312",
+    "ICBM": "16.8687, 81.9312",
+  },
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["School", "EducationalOrganization"],
+      "@id": `${baseUrl}/#school`,
+      name: "Proff. MVS Koteswara Rao Memorial Public School",
+      alternateName: [
+        "MVS School Mandapeta",
+        "MVS Public School",
+        "Prof. MVS Koteswara Rao Public School",
+      ],
+      url: baseUrl,
+      logo: `${baseUrl}/logo.png`,
+      image: `${baseUrl}/event-1.jpg`,
+      description:
+        "Proff. MVS Koteswara Rao Memorial Public School in Mandapeta offers holistic, high-quality English medium education from pre-primary through high school.",
+      slogan: "It's our responsibility to pay back to the SOCIETY",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Proff. MVS Koteswara Rao Memorial Public School",
+        addressLocality: "Mandapeta",
+        addressRegion: "Andhra Pradesh",
+        postalCode: "533308",
+        addressCountry: "IN",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 16.8687,
+        longitude: 81.9312,
+      },
+      telephone: "+91-9849532787",
+      email: "mvskchool22754@gmail.com",
+      currenciesAccepted: "INR",
+      paymentAccepted: "Bank Transfer, Cash",
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ],
+          opens: "08:30",
+          closes: "16:30",
+        },
+      ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Academic Programs",
+        itemListElement: [
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Course",
+              name: "Pre-Primary & Nursery Education",
+              description:
+                "Foundational early childhood education and developmental activities.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Course",
+              name: "Primary & Middle School (English Medium)",
+              description:
+                "Comprehensive curriculum focusing on literacy, numeracy, science, and moral values.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Course",
+              name: "High School State Board & Digital Learning",
+              description:
+                "Rigorous academic preparation with digital classroom learning and board examination guidance.",
+            },
+          },
+        ],
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${baseUrl}/#website`,
+      url: baseUrl,
+      name: "Proff. MVS Koteswara Rao Memorial Public School",
+      description:
+        "Official portal for Proff. MVS Koteswara Rao Memorial Public School, Mandapeta",
+      publisher: {
+        "@id": `${baseUrl}/#school`,
+      },
+      inLanguage: "en-IN",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -28,10 +232,19 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+
 

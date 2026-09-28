@@ -83,15 +83,17 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
-      {/* Navbar */}
-      <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Navbar / Header */}
+      <header className="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main Navigation">
           <div className="flex justify-between h-20 items-center">
             <div className="flex items-center gap-3">
               <img
                 src="/logo.png"
                 alt="Proff. MVS Koteswara Rao Memorial Public School Logo"
                 className="w-12 h-12 rounded-full object-cover shadow-md border border-amber-500/20"
+                width={48}
+                height={48}
               />
               <span className="text-lg font-extrabold text-slate-800 hidden md:block tracking-tight">
                 Proff. MVS Koteswara Rao Memorial Public School
@@ -107,17 +109,23 @@ export default function Home() {
               <Link href="#academics" className="text-xs text-gray-600 hover:text-orange-600 transition font-semibold tracking-wide uppercase">Academics</Link>
               <Link href="#gallery" className="text-xs text-gray-600 hover:text-orange-600 transition font-semibold tracking-wide uppercase">Gallery</Link>
               <Link href="#staff" className="text-xs text-gray-600 hover:text-orange-600 transition font-semibold tracking-wide uppercase">Staff</Link>
+              <Link href="#donations" className="text-xs text-gray-600 hover:text-orange-600 transition font-semibold tracking-wide uppercase">Support</Link>
               <Link href="#contact" className="text-xs text-gray-600 hover:text-orange-600 transition font-semibold tracking-wide uppercase">Contact</Link>
             </div>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center">
-              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-800 hover:text-orange-600 p-2 focus:outline-none">
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+                className="text-slate-800 hover:text-orange-600 p-2 focus:outline-none"
+                aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={mobileMenuOpen}
+              >
                 {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
               </button>
             </div>
           </div>
-        </div>
+        </nav>
 
         {/* Mobile Dropdown */}
         {mobileMenuOpen && (
@@ -127,22 +135,23 @@ export default function Home() {
               <Link onClick={() => setMobileMenuOpen(false)} href="#academics" className="text-base font-bold text-slate-800 uppercase tracking-widest hover:text-orange-600">Academics</Link>
               <Link onClick={() => setMobileMenuOpen(false)} href="#gallery" className="text-base font-bold text-slate-800 uppercase tracking-widest hover:text-orange-600">Gallery</Link>
               <Link onClick={() => setMobileMenuOpen(false)} href="#staff" className="text-base font-bold text-slate-800 uppercase tracking-widest hover:text-orange-600">Staff</Link>
+              <Link onClick={() => setMobileMenuOpen(false)} href="#donations" className="text-base font-bold text-slate-800 uppercase tracking-widest hover:text-orange-600">Support</Link>
               <Link onClick={() => setMobileMenuOpen(false)} href="#contact" className="text-base font-bold text-slate-800 uppercase tracking-widest hover:text-orange-600">Contact</Link>
             </div>
           </div>
         )}
-      </nav>
+      </header>
 
-      <main>
+      <main id="main-content">
         {/* 1. Playful Hero Section */}
-        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-sky-100 via-white to-white group">
+        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-sky-100 via-white to-white group" aria-label="Hero Introduction">
           <div className="absolute inset-0 z-0 overflow-hidden bg-black/5">
             {/* Animated background image with continuous panning and 10s rotation */}
             {heroImages.map((img, index) => (
               <img 
                 key={index}
                 src={img} 
-                alt="School Activity" 
+                alt={`Proff. MVS Koteswara Rao Memorial Public School Campus Life and Activity ${index + 1}`} 
                 className={`absolute inset-0 w-full h-full object-cover animate-pan-zoom transition-opacity duration-1000 ${
                   index === (currentBg % heroImages.length) ? 'opacity-25 group-hover:scale-110 group-hover:opacity-35 transition-transform' : 'opacity-0'
                 }`}
@@ -150,10 +159,10 @@ export default function Home() {
             ))}
             
             {/* Floating Sparkles */}
-            <div className="absolute top-20 left-10 text-yellow-400 animate-float w-16 h-16 opacity-80">
+            <div className="absolute top-20 left-10 text-yellow-400 animate-float w-16 h-16 opacity-80" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
-            <div className="absolute top-40 right-20 text-orange-400 animate-float-delay-1 w-12 h-12 opacity-70">
+            <div className="absolute top-40 right-20 text-orange-400 animate-float-delay-1 w-12 h-12 opacity-70" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
             </div>
             
@@ -166,6 +175,9 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight mb-6 leading-tight">
+              <span className="block text-2xl md:text-3xl font-extrabold text-orange-600 mb-2 tracking-normal">
+                Proff. MVS Koteswara Rao Memorial Public School
+              </span>
               A Magical Place To <br className="hidden md:block"/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 animate-pulse">
                 Learn & Grow
@@ -177,12 +189,12 @@ export default function Home() {
                 {settings.heroQuote}
               </p>
               <p className="text-xl text-slate-600 leading-relaxed font-semibold mt-4">
-                Continuing the legacy of providing accessible, high-quality education. We nurture the leaders of tomorrow with fun, holistic development, and endless creativity! 🚀
+                Continuing the legacy of providing accessible, high-quality education in Mandapeta. We nurture the leaders of tomorrow with fun, holistic development, and endless creativity! 🚀
               </p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="#contact" className="px-10 py-5 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-2xl font-black text-xl hover:scale-105 hover:shadow-2xl hover:shadow-pink-300 transition-all duration-300 flex items-center justify-center gap-3 border-b-4 border-pink-700 active:border-b-0 active:translate-y-1">
+              <Link href="#contact" className="px-10 py-5 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-2xl font-black text-xl hover:scale-105 hover:shadow-2xl hover:shadow-pink-300 transition-all duration-300 flex items-center justify-center gap-3 border-b-4 border-pink-700 active:border-b-0 active:translate-y-1" aria-label="Navigate to school admissions and contact information">
                 Admissions & Contact <ArrowRight className="w-6 h-6" />
               </Link>
             </div>
@@ -275,14 +287,20 @@ export default function Home() {
                 </ul>
               </div>
               <div className="lg:w-1/2 relative">
-                <img src="/event-1.jpg" alt="Students activity" className="rounded-3xl shadow-2xl object-cover h-80 w-full" />
+                <img 
+                  src="/event-1.jpg" 
+                  alt="Academic and extracurricular activities at Proff. MVS Koteswara Rao Memorial Public School, Mandapeta" 
+                  className="rounded-3xl shadow-2xl object-cover h-80 w-full" 
+                  width={600}
+                  height={320}
+                />
               </div>
             </div>
           </div>
         </section>
 
         {/* 5. Image Gallery Section */}
-        <section id="gallery" className="py-24 bg-white">
+        <section id="gallery" className="py-24 bg-white" aria-label="Campus Life Gallery">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-end mb-12">
               <div>
@@ -301,8 +319,9 @@ export default function Home() {
                 >
                   <img
                     src={img.url}
-                    alt={img.title}
+                    alt={`${img.title} - Proff. MVS Koteswara Rao Memorial Public School Mandapeta`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
                     <span className="text-white font-bold text-sm">{img.title}</span>
@@ -314,13 +333,13 @@ export default function Home() {
         </section>
 
         {/* Our Staff Section */}
-        <section id="staff" className="py-24 bg-slate-50 border-t border-slate-200">
+        <section id="staff" className="py-24 bg-slate-50 border-t border-slate-200" aria-label="Faculty and Leadership Team">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Our Faculty & Leadership</h2>
               <h3 className="text-4xl sm:text-5xl font-extrabold text-slate-900">Meet Our Dedicated Staff</h3>
               <p className="mt-4 text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
-                Our highly qualified teaching and non-teaching staff are committed to nurturing the potential within every student.
+                Our highly qualified teaching and non-teaching staff are committed to nurturing the potential within every student in Mandapeta.
               </p>
             </div>
             
@@ -330,12 +349,13 @@ export default function Home() {
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
               {leadership.map((staff) => (
-                <div key={staff.id} className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-200 group flex flex-col justify-between">
+                <article key={staff.id} className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-200 group flex flex-col justify-between">
                   <div className="h-80 sm:h-96 overflow-hidden bg-slate-200 relative">
                     <img
                       src={staff.img || "/event-1.jpg"}
-                      alt={staff.name}
+                      alt={`${staff.name}, ${staff.role} at Proff. MVS Koteswara Rao Memorial Public School`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-80" />
                     <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -353,7 +373,7 @@ export default function Home() {
                       </span>
                     </div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
 
@@ -363,8 +383,8 @@ export default function Home() {
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-20">
               {teaching.map((staff) => (
-                <div key={staff.id} className="bg-white p-6 sm:p-8 rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-orange-400 transform hover:-translate-y-1 group flex items-start gap-5">
-                  <div className="w-14 h-14 bg-gradient-to-tr from-orange-500 to-amber-500 text-white rounded-2xl flex items-center justify-center font-black text-xl shrink-0 shadow-lg shadow-orange-500/20">
+                <article key={staff.id} className="bg-white p-6 sm:p-8 rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-orange-400 transform hover:-translate-y-1 group flex items-start gap-5">
+                  <div className="w-14 h-14 bg-gradient-to-tr from-orange-500 to-amber-500 text-white rounded-2xl flex items-center justify-center font-black text-xl shrink-0 shadow-lg shadow-orange-500/20" aria-hidden="true">
                     {staff.name.substring(0, 1)}
                   </div>
                   <div className="space-y-1.5 flex-1 min-w-0">
@@ -374,7 +394,7 @@ export default function Home() {
                       {staff.qual}
                     </p>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
 
@@ -384,8 +404,8 @@ export default function Home() {
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {nonTeaching.map((staff) => (
-                <div key={staff.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex items-center gap-4">
-                  <div className="w-12 h-12 bg-slate-900 text-amber-400 rounded-2xl flex items-center justify-center font-black text-base shrink-0 shadow">
+                <article key={staff.id} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex items-center gap-4">
+                  <div className="w-12 h-12 bg-slate-900 text-amber-400 rounded-2xl flex items-center justify-center font-black text-base shrink-0 shadow" aria-hidden="true">
                     {staff.name.substring(0, 1)}
                   </div>
                   <div>
@@ -395,7 +415,7 @@ export default function Home() {
                       <p className="text-[11px] text-slate-500 font-medium mt-1">{staff.qual}</p>
                     )}
                   </div>
-                </div>
+                </article>
               ))}
             </div>
 
@@ -403,7 +423,7 @@ export default function Home() {
         </section>
 
         {/* 6. Online Donations */}
-        <section id="donations" className="py-24 bg-orange-50 border-t border-orange-100">
+        <section id="donations" className="py-24 bg-orange-50 border-t border-orange-100" aria-label="Support and Online Donations">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Support Us</h2>
             <h3 className="text-4xl font-extrabold text-slate-900 mb-8">For Online Donations</h3>
@@ -445,26 +465,29 @@ export default function Home() {
                   <li><Link href="#about" className="hover:text-orange-400 transition-colors">About Us</Link></li>
                   <li><Link href="#academics" className="hover:text-orange-400 transition-colors">Academics</Link></li>
                   <li><Link href="#gallery" className="hover:text-orange-400 transition-colors">Gallery</Link></li>
+                  <li><Link href="#donations" className="hover:text-orange-400 transition-colors">Donations & Support</Link></li>
                   <li><Link href="/admin/dashboard" className="hover:text-orange-400 transition-colors">Admin Portal</Link></li>
                 </ul>
               </div>
               
               <div className="md:col-span-2">
                 <h4 className="text-white font-bold uppercase tracking-wider text-sm mb-6">Contact Us</h4>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-4">
-                    <MapPin className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
-                    <span className="text-sm">{settings.address}</span>
-                  </li>
-                  <li className="flex items-center gap-4">
-                    <Phone className="w-5 h-5 text-orange-500 shrink-0" />
-                    <span className="text-sm">{settings.phone}</span>
-                  </li>
-                  <li className="flex items-center gap-4">
-                    <Mail className="w-5 h-5 text-orange-500 shrink-0" />
-                    <span className="text-sm">{settings.email}</span>
-                  </li>
-                </ul>
+                <address className="not-italic">
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-4">
+                      <MapPin className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" aria-hidden="true" />
+                      <span className="text-sm">{settings.address}</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <Phone className="w-5 h-5 text-orange-500 shrink-0" aria-hidden="true" />
+                      <a href={`tel:${settings.phone}`} className="text-sm hover:text-orange-400 transition-colors">{settings.phone}</a>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <Mail className="w-5 h-5 text-orange-500 shrink-0" aria-hidden="true" />
+                      <a href={`mailto:${settings.email}`} className="text-sm hover:text-orange-400 transition-colors">{settings.email}</a>
+                    </li>
+                  </ul>
+                </address>
               </div>
             </div>
             
