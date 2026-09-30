@@ -75,14 +75,23 @@ export default function Home() {
 
   useEffect(() => {
     loadCmsData();
+    cmsStore.syncFromServer().then(() => loadCmsData());
 
     const handleUpdate = () => loadCmsData();
     window.addEventListener("mvs_cms_update", handleUpdate);
     window.addEventListener("storage", handleUpdate);
+    window.addEventListener("focus", () => cmsStore.syncFromServer().then(() => loadCmsData()));
+
+    // Periodic sync every 15 seconds so phone & visitor browsers stay updated
+    const syncInterval = setInterval(() => {
+      cmsStore.syncFromServer().then(() => loadCmsData());
+    }, 15000);
 
     return () => {
       window.removeEventListener("mvs_cms_update", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
+      window.removeEventListener("focus", () => cmsStore.syncFromServer().then(() => loadCmsData()));
+      clearInterval(syncInterval);
     };
   }, []);
 
@@ -461,8 +470,136 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 7. Footer / Contact */}
-        <footer id="contact" className="bg-slate-900 text-slate-300 pt-20 pb-10 border-t-4 border-orange-500">
+        {/* 7. Contact Us Section */}
+        <section id="contact" className="py-24 bg-gradient-to-b from-orange-50/50 via-white to-slate-50 border-t border-orange-100" aria-label="Contact Us & School Office">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-4 shadow-sm">
+                <Phone className="w-3.5 h-3.5" />
+                {contact.tag || "Contact Us"}
+              </div>
+              <h3 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
+                {contact.title || "Get in Touch With Us"}
+              </h3>
+              <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+                Have questions regarding admissions, academics, or school activities? Reach out to our leadership team or main administration office.
+              </p>
+            </div>
+
+            {/* Key Contact Persons Cards */}
+            {contact.persons && contact.persons.length > 0 && (
+              <div className="mb-16">
+                <h4 className="text-center text-xs font-extrabold uppercase tracking-widest text-orange-600 mb-8">
+                  Key Contact Persons
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                  {contact.persons.map((person) => (
+                    <div
+                      key={person.id}
+                      className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-orange-100 hover:border-orange-400 group relative overflow-hidden flex flex-col sm:flex-row items-center sm:items-start gap-6"
+                    >
+                      <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-br from-orange-500/10 to-transparent rounded-bl-full pointer-events-none" />
+                      
+                      {/* Photo / Avatar */}
+                      <div className="relative shrink-0">
+                        {person.photo ? (
+                          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-orange-500 shadow-md">
+                            <img
+                              src={person.photo}
+                              alt={person.name}
+                              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 text-white flex items-center justify-center font-black text-3xl shadow-md">
+                            {person.name.charAt(0)}
+                          </div>
+                        )}
+                        <div className="absolute -bottom-2 -right-2 bg-orange-600 text-white p-1.5 rounded-xl shadow">
+                          <Phone className="w-4 h-4" />
+                        </div>
+                      </div>
+
+                      {/* Details */}
+                      <div className="flex-1 text-center sm:text-left space-y-2">
+                        <span className="inline-block bg-orange-50 text-orange-700 text-xs font-bold px-3 py-1 rounded-full border border-orange-200 uppercase tracking-wide">
+                          {person.role}
+                        </span>
+                        <h4 className="text-2xl font-black text-slate-900 group-hover:text-orange-600 transition-colors">
+                          {person.name}
+                        </h4>
+                        
+                        <div className="pt-2 flex flex-col gap-2">
+                          <a
+                            href={`tel:${person.phone.replace(/\s+/g, '')}`}
+                            className="inline-flex items-center justify-center sm:justify-start gap-2 text-slate-800 hover:text-orange-600 font-extrabold text-lg transition-colors group/btn"
+                          >
+                            <span className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center group-hover/btn:bg-orange-600 group-hover/btn:text-white transition-colors">
+                              <Phone className="w-4 h-4" />
+                            </span>
+                            <span>{person.phone}</span>
+                          </a>
+
+                          {person.email && (
+                            <a
+                              href={`mailto:${person.email}`}
+                              className="inline-flex items-center justify-center sm:justify-start gap-2 text-slate-600 hover:text-orange-600 text-xs font-semibold transition-colors truncate"
+                            >
+                              <Mail className="w-3.5 h-3.5 text-slate-400" />
+                              <span className="truncate">{person.email}</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* General School Office Info Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-lg transition-all text-center flex flex-col items-center">
+                <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center mb-4">
+                  <MapPin className="w-6 h-6" />
+                </div>
+                <h5 className="font-bold text-slate-900 text-base mb-1">Campus Location</h5>
+                <p className="text-sm text-slate-600 leading-relaxed">{contact.address}</p>
+              </div>
+
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-lg transition-all text-center flex flex-col items-center">
+                <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center mb-4">
+                  <Phone className="w-6 h-6" />
+                </div>
+                <h5 className="font-bold text-slate-900 text-base mb-1">General Office Phone</h5>
+                <a
+                  href={`tel:${contact.phone}`}
+                  className="text-base font-bold text-orange-600 hover:text-orange-700 transition-colors"
+                >
+                  {contact.phone}
+                </a>
+                <p className="text-xs text-slate-400 mt-1">Mon - Sat: 8:30 AM - 4:30 PM</p>
+              </div>
+
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-lg transition-all text-center flex flex-col items-center">
+                <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center mb-4">
+                  <Mail className="w-6 h-6" />
+                </div>
+                <h5 className="font-bold text-slate-900 text-base mb-1">Official Email</h5>
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="text-sm font-bold text-orange-600 hover:text-orange-700 transition-colors break-all"
+                >
+                  {contact.email}
+                </a>
+                <p className="text-xs text-slate-400 mt-1">Official Inquiries & Admissions</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 8. Footer */}
+        <footer className="bg-slate-900 text-slate-300 pt-16 pb-10 border-t-4 border-orange-500">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
               <div className="md:col-span-1">
@@ -485,20 +622,40 @@ export default function Home() {
               </div>
               
               <div className="md:col-span-2">
-                <h4 className="text-white font-bold uppercase tracking-wider text-sm mb-6">Contact Us</h4>
+                <h4 className="text-white font-bold uppercase tracking-wider text-sm mb-6">Contact & Key Staff</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  {contact.persons && contact.persons.map((p) => (
+                    <div key={p.id} className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/60 flex items-center gap-3">
+                      {p.photo ? (
+                        <img src={p.photo} alt={p.name} className="w-10 h-10 rounded-lg object-cover object-top shrink-0" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-lg bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                          {p.name.charAt(0)}
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="text-white text-xs font-bold truncate">{p.name}</p>
+                        <p className="text-orange-400 text-[11px] font-semibold">{p.role}</p>
+                        <a href={`tel:${p.phone.replace(/\s+/g, '')}`} className="text-slate-300 hover:text-orange-400 text-xs font-mono font-bold block mt-0.5">
+                          {p.phone}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 <address className="not-italic">
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-4">
-                      <MapPin className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" aria-hidden="true" />
-                      <span className="text-sm">{contact.address}</span>
+                  <ul className="space-y-3 pt-2">
+                    <li className="flex items-start gap-3">
+                      <MapPin className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" aria-hidden="true" />
+                      <span className="text-xs text-slate-400">{contact.address}</span>
                     </li>
-                    <li className="flex items-center gap-4">
-                      <Phone className="w-5 h-5 text-orange-500 shrink-0" aria-hidden="true" />
-                      <a href={`tel:${contact.phone}`} className="text-sm hover:text-orange-400 transition-colors">{contact.phone}</a>
+                    <li className="flex items-center gap-3">
+                      <Phone className="w-4 h-4 text-orange-500 shrink-0" aria-hidden="true" />
+                      <a href={`tel:${contact.phone}`} className="text-xs text-slate-400 hover:text-orange-400 transition-colors">{contact.phone}</a>
                     </li>
-                    <li className="flex items-center gap-4">
-                      <Mail className="w-5 h-5 text-orange-500 shrink-0" aria-hidden="true" />
-                      <a href={`mailto:${contact.email}`} className="text-sm hover:text-orange-400 transition-colors">{contact.email}</a>
+                    <li className="flex items-center gap-3">
+                      <Mail className="w-4 h-4 text-orange-500 shrink-0" aria-hidden="true" />
+                      <a href={`mailto:${contact.email}`} className="text-xs text-slate-400 hover:text-orange-400 transition-colors">{contact.email}</a>
                     </li>
                   </ul>
                 </address>

@@ -71,11 +71,23 @@ export interface SupportSectionData {
   ifsc: string;
 }
 
+export interface ContactPerson {
+  id: string;
+  name: string;
+  role: string;
+  phone: string;
+  email?: string;
+  photo?: string;
+}
+
 export interface ContactSectionData {
+  title?: string;
+  tag?: string;
   phone: string;
   email: string;
   address: string;
   footerAbout: string;
+  persons: ContactPerson[];
 }
 
 export interface SchoolSettings {
@@ -157,11 +169,33 @@ export const defaultSupport: SupportSectionData = {
   ifsc: "UBIN0815691"
 };
 
+export const defaultContactPersons: ContactPerson[] = [
+  {
+    id: "cp1",
+    name: "N. Tandava Krishna",
+    role: "Principal",
+    phone: "9490 300 642",
+    email: "mvskchool22754@gmail.com",
+    photo: "/tandava-krishna.jpg"
+  },
+  {
+    id: "cp2",
+    name: "L.S. Bharavi",
+    role: "Administrator",
+    phone: "9490 300 859",
+    email: "mvskchool22754@gmail.com",
+    photo: "/ls-bharavi..jpg"
+  }
+];
+
 export const defaultContact: ContactSectionData = {
+  tag: "Contact Us",
+  title: "Get in Touch With Us",
   phone: "9849532787",
   email: "mvskchool22754@gmail.com",
   address: "Prof. MVS Koteswara Rao Memorial School, Mandapeta, Andhra Pradesh, India.",
-  footerAbout: `"It's our responsibility to pay back to the SOCIETY" Nurturing students to become responsible, educated citizens of tomorrow.`
+  footerAbout: `"It's our responsibility to pay back to the SOCIETY" Nurturing students to become responsible, educated citizens of tomorrow.`,
+  persons: defaultContactPersons
 };
 
 export const defaultNoticeBoard: NoticeBoardItem[] = [
@@ -246,6 +280,21 @@ const KEYS = {
   SETTINGS: "mvs_cms_settings_v3"
 };
 
+const KEY_TO_SECTION: Record<string, string> = {
+  [KEYS.HERO]: "hero",
+  [KEYS.ABOUT]: "about",
+  [KEYS.ACADEMICS]: "academics",
+  [KEYS.SUPPORT]: "support",
+  [KEYS.CONTACT]: "contact",
+  [KEYS.NOTICES]: "notices",
+  [KEYS.POPUP]: "popup",
+  [KEYS.GALLERY]: "gallery",
+  [KEYS.LEADERSHIP]: "leadership",
+  [KEYS.TEACHING]: "teaching",
+  [KEYS.NON_TEACHING]: "nonTeaching",
+  [KEYS.SETTINGS]: "settings"
+};
+
 function safeGet<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
@@ -262,6 +311,18 @@ function safeSet<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
     window.dispatchEvent(new Event("mvs_cms_update"));
     window.dispatchEvent(new Event("storage"));
+
+    // Persist to server API in background so changes reflect across all devices/phones
+    const sectionName = KEY_TO_SECTION[key];
+    if (sectionName) {
+      fetch("/api/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ section: sectionName, data: value })
+      }).catch((err) => {
+        console.warn("Background server sync error:", err);
+      });
+    }
   } catch (e) {
     console.error("Failed to save to localStorage", e);
   }
@@ -280,7 +341,14 @@ export const cmsStore = {
   getSupport: (): SupportSectionData => safeGet(KEYS.SUPPORT, defaultSupport),
   setSupport: (v: SupportSectionData) => safeSet(KEYS.SUPPORT, v),
 
-  getContact: (): ContactSectionData => safeGet(KEYS.CONTACT, defaultContact),
+  getContact: (): ContactSectionData => {
+    const raw = safeGet<Partial<ContactSectionData>>(KEYS.CONTACT, defaultContact);
+    return {
+      ...defaultContact,
+      ...raw,
+      persons: raw.persons && raw.persons.length > 0 ? raw.persons : defaultContact.persons
+    };
+  },
   setContact: (v: ContactSectionData) => safeSet(KEYS.CONTACT, v),
 
   getNotices: (): NoticeBoardItem[] => safeGet(KEYS.NOTICES, defaultNoticeBoard),
@@ -303,5 +371,42 @@ export const cmsStore = {
 
   getSettings: (): SchoolSettings => safeGet(KEYS.SETTINGS, defaultSettings),
   setSettings: (v: SchoolSettings) => safeSet(KEYS.SETTINGS, v),
+
+  syncFromServer: async (): Promise<boolean> => {
+    if (typeof window === "undefined") return false;
+    try {
+      const res = await fetch("/api/cms", {
+        cache: "no-store",
+        headers: { "Cache-Control": "no-cache" }
+      });
+      if (!res.ok) return false;
+      const data = await res.json();
+
+      if (data.hero) localStorage.setItem(KEYS.HERO, JSON.stringify(data.hero));
+      if (data.about) localStorage.setItem(KEYS.ABOUT, JSON.stringify(data.about));
+      if (data.academics) localStorage.setItem(KEYS.ACADEMICS, JSON.stringify(data.academics));
+      if (data.support) localStorage.setItem(KEYS.SUPPORT, JSON.stringify(data.support));
+      if (data.contact) localStorage.setItem(KEYS.CONTACT, JSON.stringify(data.contact));
+      if (data.notices) localStorage.setItem(KEYS.NOTICES, JSON.stringify(data.notices));
+      if (data.popup) localStorage.setItem(KEYS.POPUP, JSON.stringify(data.popup));
+      if (data.gallery) localStorage.setItem(KEYS.GALLERY, JSON.stringify(data.gallery));
+      if (data.leadership) localStorage.setItem(KEYS.LEADERSHIP, JSON.stringify(data.leadership));
+      if (data.teaching) localStorage.setItem(KEYS.TEACHING, JSON.stringify(data.teaching));
+      if (data.nonTeaching) localStorage.setItem(KEYS.NON_TEACHING, JSON.stringify(data.nonTeaching));
+      if (data.settings) localStorage.setItem(KEYS.SETTINGS, JSON.stringify(data.settings));
+
+      window.dispatchEvent(new Event("mvs_cms_update"));
+      return true;
+    } catch (err) {
+      console.warn("Failed to sync CMS from server:", err);
+      return false;
+    }
+  }
 };
+
+// Automatic initial sync from server when running in browser
+if (typeof window !== "undefined") {
+  cmsStore.syncFromServer();
+}
+
 

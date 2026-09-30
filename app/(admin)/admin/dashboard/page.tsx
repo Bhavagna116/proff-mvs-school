@@ -22,6 +22,7 @@ import {
   HeartHandshake,
   Layers,
   PhoneCall,
+  Phone,
   Edit3
 } from "lucide-react";
 import {
@@ -37,11 +38,13 @@ import {
   HeroSectionData,
   SupportSectionData,
   ContactSectionData,
+  ContactPerson,
   defaultHero,
   defaultAbout,
   defaultAcademics,
   defaultSupport,
   defaultContact,
+  defaultContactPersons,
   defaultNoticeBoard,
   defaultPopup,
   defaultGallery,
@@ -82,6 +85,7 @@ export default function AdminDashboard() {
   const [editingCard, setEditingCard] = useState<AboutCard | null>(null);
   const [editingProgram, setEditingProgram] = useState<AcademicProgramItem | null>(null);
   const [editingNotice, setEditingNotice] = useState<NoticeBoardItem | null>(null);
+  const [editingContactPerson, setEditingContactPerson] = useState<ContactPerson | null>(null);
 
   const [toastMsg, setToastMsg] = useState("");
 
@@ -97,9 +101,10 @@ export default function AdminDashboard() {
   const editStaffFileInputRef = useRef<HTMLInputElement>(null);
   const heroFileInputRef = useRef<HTMLInputElement>(null);
   const academicsFileInputRef = useRef<HTMLInputElement>(null);
+  const cpFileInputRef = useRef<HTMLInputElement>(null);
+  const editCpFileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load from store on mount
-  useEffect(() => {
+  const loadData = () => {
     setHero(cmsStore.getHero());
     setAbout(cmsStore.getAbout());
     setAcademics(cmsStore.getAcademics());
@@ -111,6 +116,21 @@ export default function AdminDashboard() {
     setLeadership(cmsStore.getLeadership());
     setTeaching(cmsStore.getTeaching());
     setNonTeaching(cmsStore.getNonTeaching());
+  };
+
+  // Load from store on mount & sync with server
+  useEffect(() => {
+    loadData();
+    cmsStore.syncFromServer().then(() => loadData());
+
+    const handleUpdate = () => loadData();
+    window.addEventListener("mvs_cms_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+
+    return () => {
+      window.removeEventListener("mvs_cms_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   // ==========================================
@@ -453,10 +473,105 @@ export default function AdminDashboard() {
   // ==========================================
   // 6. CONTACT & FOOTER HANDLERS
   // ==========================================
+  const [newCpName, setNewCpName] = useState("");
+  const [newCpRole, setNewCpRole] = useState("");
+  const [newCpPhone, setNewCpPhone] = useState("");
+  const [newCpEmail, setNewCpEmail] = useState("");
+  const [newCpPhoto, setNewCpPhoto] = useState("");
+  const [cpFileName, setCpFileName] = useState("");
+
   const handleSaveContact = (e: React.FormEvent) => {
     e.preventDefault();
     cmsStore.setContact(contact);
     showToast("Contact details and footer updated!");
+  };
+
+  const handleCpFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCpFileName(file.name);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (typeof event.target?.result === "string") {
+          setNewCpPhoto(event.target.result);
+          showToast(`Selected photo "${file.name}" for contact person!`);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddContactPerson = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCpName.trim() || !newCpPhone.trim()) {
+      showToast("Please enter at least Contact Name and Phone Number!");
+      return;
+    }
+
+    const newPerson: ContactPerson = {
+      id: Date.now().toString(),
+      name: newCpName.trim(),
+      role: newCpRole.trim() || "Contact Person",
+      phone: newCpPhone.trim(),
+      email: newCpEmail.trim() || undefined,
+      photo: newCpPhoto.trim() || undefined
+    };
+
+    const currentPersons = contact.persons && contact.persons.length > 0 ? contact.persons : defaultContactPersons;
+    const updated = {
+      ...contact,
+      persons: [...currentPersons, newPerson]
+    };
+
+    setContact(updated);
+    cmsStore.setContact(updated);
+    setNewCpName("");
+    setNewCpRole("");
+    setNewCpPhone("");
+    setNewCpEmail("");
+    setNewCpPhoto("");
+    setCpFileName("");
+    if (cpFileInputRef.current) {
+      cpFileInputRef.current.value = "";
+    }
+    showToast(`Added ${newPerson.name} under Contact Us!`);
+  };
+
+  const handleEditCpFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && editingContactPerson) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (typeof event.target?.result === "string") {
+          setEditingContactPerson({ ...editingContactPerson, photo: event.target.result });
+          showToast(`Loaded replacement photo "${file.name}"!`);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveEditContactPerson = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingContactPerson) return;
+    const currentPersons = contact.persons && contact.persons.length > 0 ? contact.persons : defaultContactPersons;
+    const updatedPersons = currentPersons.map((p) =>
+      p.id === editingContactPerson.id ? editingContactPerson : p
+    );
+    const updated = { ...contact, persons: updatedPersons };
+    setContact(updated);
+    cmsStore.setContact(updated);
+    setEditingContactPerson(null);
+    showToast(`Updated details & photo for ${editingContactPerson.name}!`);
+  };
+
+  const handleDeleteContactPerson = (id: string) => {
+    const currentPersons = contact.persons && contact.persons.length > 0 ? contact.persons : defaultContactPersons;
+    const updatedPersons = currentPersons.filter((p) => p.id !== id);
+    const updated = { ...contact, persons: updatedPersons };
+    setContact(updated);
+    cmsStore.setContact(updated);
+    showToast("Contact person removed!");
   };
 
   // ==========================================
@@ -1363,19 +1478,208 @@ export default function AdminDashboard() {
       {/* ========================================== */}
       {activeTab === "contact" && (
         <div className="space-y-8 animate-in fade-in-50">
-          <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-800 max-w-3xl">
+          {/* Key Contact Persons Management */}
+          <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-800">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Users className="w-5 h-5 text-orange-500" />
+                  Key Contact Persons (Under Contact Us)
+                </h3>
+                <p className="text-slate-400 text-sm mt-1">
+                  Manage leadership contacts displayed prominently in the Contact Us section (e.g., Principal, Administrator).
+                </p>
+              </div>
+            </div>
+
+            {/* List of Current Contact Persons */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              {(contact.persons && contact.persons.length > 0 ? contact.persons : defaultContactPersons).map((p) => (
+                <div
+                  key={p.id}
+                  className="bg-slate-950 p-5 rounded-2xl border border-slate-800 hover:border-slate-700 transition flex items-start gap-4"
+                >
+                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-800 border border-slate-700 shrink-0 flex items-center justify-center">
+                    {p.photo ? (
+                      <img src={p.photo} alt={p.name} className="w-full h-full object-cover object-top" />
+                    ) : (
+                      <span className="text-orange-400 font-black text-xl">{p.name.charAt(0)}</span>
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-bold bg-orange-950 text-orange-400 px-2.5 py-0.5 rounded-full border border-orange-800/60 uppercase">
+                        {p.role}
+                      </span>
+                    </div>
+                    <h4 className="text-white font-bold text-base mt-1 truncate">{p.name}</h4>
+                    <p className="text-slate-300 font-mono text-sm font-semibold mt-0.5 flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-orange-400" />
+                      {p.phone}
+                    </p>
+                    {p.email && (
+                      <p className="text-slate-400 text-xs truncate mt-0.5">{p.email}</p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setEditingContactPerson(p)}
+                      className="p-2 text-slate-400 hover:text-amber-400 hover:bg-slate-800 rounded-lg transition"
+                      title="Edit Contact Person"
+                    >
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteContactPerson(p.id)}
+                      className="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition"
+                      title="Delete Contact Person"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Add New Contact Person Form */}
+            <div className="pt-6 border-t border-slate-800">
+              <h4 className="text-sm font-bold text-orange-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <Plus className="w-4 h-4" /> Add New Key Contact Person
+              </h4>
+
+              <form onSubmit={handleAddContactPerson} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1">Full Name *</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. N. Tandava Krishna"
+                      value={newCpName}
+                      onChange={(e) => setNewCpName(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1">Role / Designation *</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Principal / Administrator"
+                      value={newCpRole}
+                      onChange={(e) => setNewCpRole(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1">Phone Number *</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 9490 300 642"
+                      value={newCpPhone}
+                      onChange={(e) => setNewCpPhone(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1">Email Address (Optional)</label>
+                    <input
+                      type="email"
+                      placeholder="e.g. school@gmail.com"
+                      value={newCpEmail}
+                      onChange={(e) => setNewCpEmail(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1">
+                      Photo (Pick from Device/Drive or paste URL)
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="file"
+                        ref={cpFileInputRef}
+                        onChange={handleCpFileSelect}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => cpFileInputRef.current?.click()}
+                        className="bg-slate-800 hover:bg-slate-700 text-orange-400 font-bold px-4 py-3 rounded-xl border border-slate-700 text-xs shrink-0"
+                      >
+                        Pick Photo
+                      </button>
+                      <input
+                        type="text"
+                        placeholder="Or image URL (e.g. /tandava-krishna.jpg)"
+                        value={newCpPhoto}
+                        onChange={(e) => setNewCpPhoto(e.target.value)}
+                        className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 text-xs truncate"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {newCpPhoto && (
+                  <div className="flex items-center gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800 max-w-sm">
+                    <img src={newCpPhoto} alt="Preview" className="w-12 h-12 rounded-lg object-cover" />
+                    <span className="text-xs text-slate-300">Photo preview loaded</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="bg-orange-600 hover:bg-orange-500 text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg text-sm"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Key Contact Person</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* General Contact Info & Footer Settings */}
+          <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-800">
             <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
               <PhoneCall className="w-5 h-5 text-orange-500" />
-              Contact Information & Footer Details
+              General School Contact & Footer Info
             </h3>
             <p className="text-slate-400 text-sm mb-6">
-              Update phone numbers, email, campus physical address, and footer description.
+              Update general school phone number, email address, physical location, and footer quote.
             </p>
 
-            <form onSubmit={handleSaveContact} className="space-y-4">
+            <form onSubmit={handleSaveContact} className="space-y-4 max-w-3xl">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Phone Number</label>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">Section Tag Badge</label>
+                  <input
+                    type="text"
+                    value={contact.tag || "Contact Us"}
+                    onChange={(e) => setContact({ ...contact, tag: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">Section Title</label>
+                  <input
+                    type="text"
+                    value={contact.title || "Get in Touch With Us"}
+                    onChange={(e) => setContact({ ...contact, title: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">General Office Phone</label>
                   <input
                     type="text"
                     value={contact.phone}
@@ -1384,7 +1688,7 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Email Address</label>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">General Office Email</label>
                   <input
                     type="email"
                     value={contact.email}
@@ -2088,6 +2392,125 @@ export default function AdminDashboard() {
                   className="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3 rounded-xl shadow-lg transition-all text-sm"
                 >
                   Save Notice
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 6. EDIT CONTACT PERSON MODAL */}
+      {editingContactPerson && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl animate-in zoom-in-95">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <Edit3 className="w-5 h-5 text-amber-400" />
+                Edit Key Contact Person
+              </h3>
+              <button
+                onClick={() => setEditingContactPerson(null)}
+                className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEditContactPerson} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Full Name *</label>
+                <input
+                  type="text"
+                  value={editingContactPerson.name}
+                  onChange={(e) => setEditingContactPerson({ ...editingContactPerson, name: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">Role / Designation *</label>
+                  <input
+                    type="text"
+                    value={editingContactPerson.role}
+                    onChange={(e) => setEditingContactPerson({ ...editingContactPerson, role: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">Phone Number *</label>
+                  <input
+                    type="text"
+                    value={editingContactPerson.phone}
+                    onChange={(e) => setEditingContactPerson({ ...editingContactPerson, phone: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Email Address (Optional)</label>
+                <input
+                  type="email"
+                  value={editingContactPerson.email || ""}
+                  onChange={(e) => setEditingContactPerson({ ...editingContactPerson, email: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
+                  Change Photo (Upload from Device or enter URL)
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="file"
+                    ref={editCpFileInputRef}
+                    onChange={handleEditCpFileSelect}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => editCpFileInputRef.current?.click()}
+                    className="bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold px-4 py-3 rounded-xl border border-slate-700 text-xs shrink-0"
+                  >
+                    Pick New Photo
+                  </button>
+                  <input
+                    type="text"
+                    value={editingContactPerson.photo || ""}
+                    onChange={(e) => setEditingContactPerson({ ...editingContactPerson, photo: e.target.value })}
+                    className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-xs truncate"
+                    placeholder="Image URL"
+                  />
+                </div>
+                {editingContactPerson.photo && (
+                  <div className="mt-3 flex items-center gap-3">
+                    <img
+                      src={editingContactPerson.photo}
+                      alt="Preview"
+                      className="w-16 h-16 rounded-xl object-cover object-top border border-slate-700"
+                    />
+                    <span className="text-xs text-slate-400">Current photo preview</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setEditingContactPerson(null)}
+                  className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3 rounded-xl shadow-lg transition-all text-sm"
+                >
+                  Save Changes
                 </button>
               </div>
             </form>
