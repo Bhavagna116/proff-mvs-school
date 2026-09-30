@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Proff. MVS Koteswara Rao Memorial Public School, Mandapeta";
+export const alt = "Prof. MVS Koteswara Rao Memorial School, Mandapeta";
 
 export const size = {
   width: 1200,
@@ -52,7 +52,7 @@ export default async function Image() {
             textShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
           }}
         >
-          Proff. MVS Koteswara Rao Memorial Public School
+          Prof. MVS Koteswara Rao Memorial School
         </h1>
 
         <p

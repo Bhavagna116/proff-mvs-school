@@ -274,7 +274,7 @@ export default function AdminDashboard() {
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Proff. MVS Koteswara Rao Memorial Public School
+              Prof. MVS Koteswara Rao Memorial School
             </h2>
             <p className="text-amber-100 text-sm mt-1 max-w-xl">
               Any changes made here immediately sync live to the main website!

@@ -100,7 +100,7 @@ export const defaultSettings: SchoolSettings = {
   heroQuote: `"It's our responsibility to pay back to the SOCIETY"`,
   phone: "9849532787",
   email: "mvskchool22754@gmail.com",
-  address: "Proff. MVS Koteswara Rao Memorial Public School, Mandapeta, Andhra Pradesh, India.",
+  address: "Prof. MVS Koteswara Rao Memorial School, Mandapeta, Andhra Pradesh, India.",
   bankAccount: "156910100118069",
   ifsc: "UBIN0815691"
 };

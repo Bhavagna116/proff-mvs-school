@@ -2,10 +2,10 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Proff. MVS Koteswara Rao Memorial Public School",
-    short_name: "MVS Public School",
+    name: "Prof. MVS Koteswara Rao Memorial School",
+    short_name: "MVS Memorial School",
     description:
-      "Official Portal of Proff. MVS Koteswara Rao Memorial Public School, Mandapeta - Nurturing future leaders through quality English medium education.",
+      "Official Portal of Prof. MVS Koteswara Rao Memorial School, Mandapeta - Nurturing future leaders through quality English medium education.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

@@ -62,8 +62,8 @@ export default function AdminLayout({
             />
             <div>
               <h2 className="text-lg font-bold text-white leading-tight">Admin Portal</h2>
-              <p className="text-[11px] text-amber-400 font-medium truncate max-w-[160px]" title="Proff. MVS Koteswara Rao Memorial Public School">
-                Proff. MVS Koteswara Rao School
+              <p className="text-[11px] text-amber-400 font-medium truncate max-w-[160px]" title="Prof. MVS Koteswara Rao Memorial School">
+                Prof. MVS Koteswara Rao Memorial School
               </p>
             </div>
           </div>

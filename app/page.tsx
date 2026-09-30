@@ -90,16 +90,16 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <img
                 src="/logo.png"
-                alt="Proff. MVS Koteswara Rao Memorial Public School Logo"
+                alt="Prof. MVS Koteswara Rao Memorial School Logo"
                 className="w-12 h-12 rounded-full object-cover shadow-md border border-amber-500/20"
                 width={48}
                 height={48}
               />
               <span className="text-lg font-extrabold text-slate-800 hidden md:block tracking-tight">
-                Proff. MVS Koteswara Rao Memorial Public School
+                Prof. MVS Koteswara Rao Memorial School
               </span>
               <span className="text-base font-extrabold text-orange-600 md:hidden">
-                Proff. MVS School
+                Prof. MVS Memorial School
               </span>
             </div>
             
@@ -151,7 +151,7 @@ export default function Home() {
               <img 
                 key={index}
                 src={img} 
-                alt={`Proff. MVS Koteswara Rao Memorial Public School Campus Life and Activity ${index + 1}`} 
+                alt={`Prof. MVS Koteswara Rao Memorial School Campus Life and Activity ${index + 1}`} 
                 className={`absolute inset-0 w-full h-full object-cover animate-pan-zoom transition-opacity duration-1000 ${
                   index === (currentBg % heroImages.length) ? 'opacity-25 group-hover:scale-110 group-hover:opacity-35 transition-transform' : 'opacity-0'
                 }`}
@@ -176,7 +176,7 @@ export default function Home() {
             
             <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight mb-6 leading-tight">
               <span className="block text-2xl md:text-3xl font-extrabold text-orange-600 mb-2 tracking-normal">
-                Proff. MVS Koteswara Rao Memorial Public School
+                Prof. MVS Koteswara Rao Memorial School
               </span>
               A Magical Place To <br className="hidden md:block"/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 animate-pulse">
@@ -233,7 +233,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Our Philosophy</h2>
-              <h3 className="text-4xl font-extrabold text-slate-900">Why Choose Proff. MVS Koteswara Rao Memorial Public School?</h3>
+              <h3 className="text-4xl font-extrabold text-slate-900">Why Choose Prof. MVS Koteswara Rao Memorial School?</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -289,7 +289,7 @@ export default function Home() {
               <div className="lg:w-1/2 relative">
                 <img 
                   src="/event-1.jpg" 
-                  alt="Academic and extracurricular activities at Proff. MVS Koteswara Rao Memorial Public School, Mandapeta" 
+                  alt="Academic and extracurricular activities at Prof. MVS Koteswara Rao Memorial School, Mandapeta" 
                   className="rounded-3xl shadow-2xl object-cover h-80 w-full" 
                   width={600}
                   height={320}
@@ -319,7 +319,7 @@ export default function Home() {
                 >
                   <img
                     src={img.url}
-                    alt={`${img.title} - Proff. MVS Koteswara Rao Memorial Public School Mandapeta`}
+                    alt={`${img.title} - Prof. MVS Koteswara Rao Memorial School Mandapeta`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"
                   />
@@ -353,7 +353,7 @@ export default function Home() {
                   <div className="h-80 sm:h-96 overflow-hidden bg-slate-200 relative">
                     <img
                       src={staff.img || "/event-1.jpg"}
-                      alt={`${staff.name}, ${staff.role} at Proff. MVS Koteswara Rao Memorial Public School`}
+                      alt={`${staff.name}, ${staff.role} at Prof. MVS Koteswara Rao Memorial School`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
@@ -428,7 +428,7 @@ export default function Home() {
             <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Support Us</h2>
             <h3 className="text-4xl font-extrabold text-slate-900 mb-8">For Online Donations</h3>
             <div className="bg-white p-10 rounded-3xl shadow-xl border border-orange-100 text-left md:text-center">
-              <h4 className="text-2xl font-bold text-slate-800 mb-6">Proff. MVS Koteswara Rao Memorial Public School</h4>
+              <h4 className="text-2xl font-bold text-slate-800 mb-6">Prof. MVS Koteswara Rao Memorial School</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
                   <p className="text-gray-500 text-sm font-semibold mb-1 uppercase tracking-wider">Bank</p>
@@ -452,7 +452,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
               <div className="md:col-span-1">
-                <h3 className="text-2xl font-bold text-white mb-6">Proff. MVS Koteswara Rao School</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">Prof. MVS Koteswara Rao Memorial School</h3>
                 <p className="text-slate-400 text-sm leading-relaxed mb-6">
                   {settings.heroQuote} Nurturing students to become responsible, educated citizens of tomorrow.
                 </p>
@@ -492,7 +492,7 @@ export default function Home() {
             </div>
             
             <div className="pt-8 border-t border-slate-800 text-center text-sm text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p>&copy; {new Date().getFullYear()} Proff. MVS Koteswara Rao Memorial Public School. All rights reserved.</p>
+              <p>&copy; {new Date().getFullYear()} Prof. MVS Koteswara Rao Memorial School. All rights reserved.</p>
               <div className="flex gap-4">
                 <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
                 <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>

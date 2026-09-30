@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin Login | Proff. MVS Koteswara Rao Memorial Public School",
+  title: "Admin Login | Prof. MVS Koteswara Rao Memorial School",
   description: "Secure login portal for school administrators and staff.",
   robots: {
     index: false,
