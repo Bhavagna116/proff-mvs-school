@@ -28,6 +28,56 @@ export interface StaffMember {
   category: "leadership" | "teaching" | "non-teaching";
 }
 
+export interface AboutCard {
+  id: string;
+  title: string;
+  description: string;
+  color: "orange" | "red" | "indigo" | "emerald" | "purple" | "blue";
+}
+
+export interface AboutSectionData {
+  tag: string;
+  title: string;
+  cards: AboutCard[];
+}
+
+export interface AcademicProgramItem {
+  id: string;
+  text: string;
+}
+
+export interface AcademicsSectionData {
+  tag: string;
+  title: string;
+  description: string;
+  image: string;
+  programs: AcademicProgramItem[];
+}
+
+export interface HeroSectionData {
+  admissionsTag: string;
+  schoolTitle: string;
+  sloganQuote: string;
+  description: string;
+  images: string[];
+}
+
+export interface SupportSectionData {
+  tag: string;
+  title: string;
+  schoolName: string;
+  bankName: string;
+  accountNumber: string;
+  ifsc: string;
+}
+
+export interface ContactSectionData {
+  phone: string;
+  email: string;
+  address: string;
+  footerAbout: string;
+}
+
 export interface SchoolSettings {
   admissionsTag: string;
   heroQuote: string;
@@ -38,7 +88,82 @@ export interface SchoolSettings {
   ifsc: string;
 }
 
-// Initial Default Values
+// Initial Defaults
+export const defaultHero: HeroSectionData = {
+  admissionsTag: "✨ Admissions Open for 2026-27 ✨",
+  schoolTitle: "Prof. MVS Koteswara Rao Memorial School",
+  sloganQuote: `"It's our responsibility to pay back to the SOCIETY"`,
+  description:
+    "Continuing the legacy of providing accessible, high-quality education in Mandapeta. We nurture the leaders of tomorrow with fun, holistic development, and endless creativity! 🚀",
+  images: [
+    "/event-1.jpg",
+    "/event-2.jpg",
+    "/event-3.jpg",
+    "/event-4.jpg",
+    "/event-5.jpg",
+    "/event-6.jpg",
+    "/event-7.jpg",
+    "/event-8.jpg"
+  ]
+};
+
+export const defaultAbout: AboutSectionData = {
+  tag: "Our Philosophy",
+  title: "Why Choose Prof. MVS Koteswara Rao Memorial School?",
+  cards: [
+    {
+      id: "a1",
+      title: "Quality Education",
+      description:
+        "We believe in empowering students with knowledge that transcends textbooks, preparing them for real-world challenges through interactive learning.",
+      color: "orange"
+    },
+    {
+      id: "a2",
+      title: "Social Responsibility",
+      description:
+        "Instilling a sense of duty to pay back to the society that nurtures us is at the core of our educational philosophy.",
+      color: "red"
+    },
+    {
+      id: "a3",
+      title: "Holistic Growth",
+      description:
+        "Fostering excellence not just in academics, but in sports, arts, and character building for complete all-around development.",
+      color: "indigo"
+    }
+  ]
+};
+
+export const defaultAcademics: AcademicsSectionData = {
+  tag: "Curriculum",
+  title: "Academic Excellence",
+  description:
+    "Our comprehensive English Medium curriculum is designed to stimulate intellectual curiosity and foster a lifelong love for learning. We maintain optimal student-teacher ratios for personalized attention.",
+  image: "/event-1.jpg",
+  programs: [
+    { id: "p1", text: "Pre-Primary & Nursery Education" },
+    { id: "p2", text: "Primary & Middle School (E.M)" },
+    { id: "p3", text: "High School State Board & Digital Learning" }
+  ]
+};
+
+export const defaultSupport: SupportSectionData = {
+  tag: "Support Us",
+  title: "For Online Donations",
+  schoolName: "Prof. MVS Koteswara Rao Memorial School",
+  bankName: "Union Bank",
+  accountNumber: "156910100118069",
+  ifsc: "UBIN0815691"
+};
+
+export const defaultContact: ContactSectionData = {
+  phone: "9849532787",
+  email: "mvskchool22754@gmail.com",
+  address: "Prof. MVS Koteswara Rao Memorial School, Mandapeta, Andhra Pradesh, India.",
+  footerAbout: `"It's our responsibility to pay back to the SOCIETY" Nurturing students to become responsible, educated citizens of tomorrow.`
+};
+
 export const defaultNoticeBoard: NoticeBoardItem[] = [
   { id: "1", tag: "NEW", tagColor: "orange", text: "Parent-Teacher Meeting scheduled for Nov 15th." },
   { id: "2", tag: "SPORTS", tagColor: "blue", text: "Annual Sports Day registration closes this Friday." },
@@ -107,13 +232,18 @@ export const defaultSettings: SchoolSettings = {
 
 // Storage keys
 const KEYS = {
-  NOTICES: "mvs_cms_notices_v2",
-  POPUP: "mvs_cms_popup_v2",
-  GALLERY: "mvs_cms_gallery_v2",
-  LEADERSHIP: "mvs_cms_leadership_v2",
-  TEACHING: "mvs_cms_teaching_v2",
-  NON_TEACHING: "mvs_cms_non_teaching_v2",
-  SETTINGS: "mvs_cms_settings_v2"
+  HERO: "mvs_cms_hero_v3",
+  ABOUT: "mvs_cms_about_v3",
+  ACADEMICS: "mvs_cms_academics_v3",
+  SUPPORT: "mvs_cms_support_v3",
+  CONTACT: "mvs_cms_contact_v3",
+  NOTICES: "mvs_cms_notices_v3",
+  POPUP: "mvs_cms_popup_v3",
+  GALLERY: "mvs_cms_gallery_v3",
+  LEADERSHIP: "mvs_cms_leadership_v3",
+  TEACHING: "mvs_cms_teaching_v3",
+  NON_TEACHING: "mvs_cms_non_teaching_v3",
+  SETTINGS: "mvs_cms_settings_v3"
 };
 
 function safeGet<T>(key: string, fallback: T): T {
@@ -138,6 +268,21 @@ function safeSet<T>(key: string, value: T): void {
 }
 
 export const cmsStore = {
+  getHero: (): HeroSectionData => safeGet(KEYS.HERO, defaultHero),
+  setHero: (v: HeroSectionData) => safeSet(KEYS.HERO, v),
+
+  getAbout: (): AboutSectionData => safeGet(KEYS.ABOUT, defaultAbout),
+  setAbout: (v: AboutSectionData) => safeSet(KEYS.ABOUT, v),
+
+  getAcademics: (): AcademicsSectionData => safeGet(KEYS.ACADEMICS, defaultAcademics),
+  setAcademics: (v: AcademicsSectionData) => safeSet(KEYS.ACADEMICS, v),
+
+  getSupport: (): SupportSectionData => safeGet(KEYS.SUPPORT, defaultSupport),
+  setSupport: (v: SupportSectionData) => safeSet(KEYS.SUPPORT, v),
+
+  getContact: (): ContactSectionData => safeGet(KEYS.CONTACT, defaultContact),
+  setContact: (v: ContactSectionData) => safeSet(KEYS.CONTACT, v),
+
   getNotices: (): NoticeBoardItem[] => safeGet(KEYS.NOTICES, defaultNoticeBoard),
   setNotices: (v: NoticeBoardItem[]) => safeSet(KEYS.NOTICES, v),
 
@@ -159,3 +304,4 @@ export const cmsStore = {
   getSettings: (): SchoolSettings => safeGet(KEYS.SETTINGS, defaultSettings),
   setSettings: (v: SchoolSettings) => safeSet(KEYS.SETTINGS, v),
 };
+

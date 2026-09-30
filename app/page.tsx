@@ -23,14 +23,22 @@ import {
   PopupNotice,
   GalleryPhoto,
   StaffMember,
-  SchoolSettings,
+  AboutSectionData,
+  AcademicsSectionData,
+  HeroSectionData,
+  SupportSectionData,
+  ContactSectionData,
+  defaultHero,
+  defaultAbout,
+  defaultAcademics,
+  defaultSupport,
+  defaultContact,
   defaultNoticeBoard,
   defaultPopup,
   defaultGallery,
   defaultLeadership,
   defaultTeaching,
-  defaultNonTeaching,
-  defaultSettings
+  defaultNonTeaching
 } from "@/lib/cms-store";
 
 export default function Home() {
@@ -39,22 +47,30 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(true);
 
   // Dynamic CMS state
+  const [hero, setHero] = useState<HeroSectionData>(defaultHero);
+  const [about, setAbout] = useState<AboutSectionData>(defaultAbout);
+  const [academics, setAcademics] = useState<AcademicsSectionData>(defaultAcademics);
+  const [support, setSupport] = useState<SupportSectionData>(defaultSupport);
+  const [contact, setContact] = useState<ContactSectionData>(defaultContact);
   const [notices, setNotices] = useState<NoticeBoardItem[]>(defaultNoticeBoard);
   const [popup, setPopup] = useState<PopupNotice>(defaultPopup);
   const [gallery, setGallery] = useState<GalleryPhoto[]>(defaultGallery);
   const [leadership, setLeadership] = useState<StaffMember[]>(defaultLeadership);
   const [teaching, setTeaching] = useState<StaffMember[]>(defaultTeaching);
   const [nonTeaching, setNonTeaching] = useState<StaffMember[]>(defaultNonTeaching);
-  const [settings, setSettings] = useState<SchoolSettings>(defaultSettings);
 
   const loadCmsData = () => {
+    setHero(cmsStore.getHero());
+    setAbout(cmsStore.getAbout());
+    setAcademics(cmsStore.getAcademics());
+    setSupport(cmsStore.getSupport());
+    setContact(cmsStore.getContact());
     setNotices(cmsStore.getNotices());
     setPopup(cmsStore.getPopup());
     setGallery(cmsStore.getGallery());
     setLeadership(cmsStore.getLeadership());
     setTeaching(cmsStore.getTeaching());
     setNonTeaching(cmsStore.getNonTeaching());
-    setSettings(cmsStore.getSettings());
   };
 
   useEffect(() => {
@@ -70,14 +86,16 @@ export default function Home() {
     };
   }, []);
 
-  // Background carousel images array from gallery or defaults
-  const heroImages = gallery.length > 0 ? gallery.map((g) => g.url) : ["/event-1.jpg"];
+  // Background carousel images array from hero images or gallery
+  const heroImages = hero.images && hero.images.length > 0
+    ? hero.images
+    : (gallery.length > 0 ? gallery.map((g) => g.url) : ["/event-1.jpg"]);
 
   useEffect(() => {
     if (heroImages.length === 0) return;
     const interval = setInterval(() => {
       setCurrentBg((prev) => (prev + 1) % heroImages.length);
-    }, 10000); // 10 seconds
+    }, 8000);
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
@@ -170,13 +188,15 @@ export default function Home() {
           </div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 text-white font-bold text-sm mb-6 shadow-xl shadow-orange-200 animate-bounce">
-              {settings.admissionsTag}
-            </div>
+            {hero.admissionsTag && (
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 text-white font-bold text-sm mb-6 shadow-xl shadow-orange-200 animate-bounce">
+                {hero.admissionsTag}
+              </div>
+            )}
             
             <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight mb-6 leading-tight">
               <span className="block text-2xl md:text-3xl font-extrabold text-orange-600 mb-2 tracking-normal">
-                Prof. MVS Koteswara Rao Memorial School
+                {hero.schoolTitle}
               </span>
               A Magical Place To <br className="hidden md:block"/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 animate-pulse">
@@ -185,11 +205,13 @@ export default function Home() {
             </h1>
             
             <div className="max-w-3xl mx-auto mb-10">
-              <p className="text-2xl text-slate-800 font-extrabold italic mb-4 bg-yellow-100 inline-block px-4 py-1 rounded-2xl transform -rotate-2">
-                {settings.heroQuote}
-              </p>
+              {hero.sloganQuote && (
+                <p className="text-2xl text-slate-800 font-extrabold italic mb-4 bg-yellow-100 inline-block px-4 py-1 rounded-2xl transform -rotate-2">
+                  {hero.sloganQuote}
+                </p>
+              )}
               <p className="text-xl text-slate-600 leading-relaxed font-semibold mt-4">
-                Continuing the legacy of providing accessible, high-quality education in Mandapeta. We nurture the leaders of tomorrow with fun, holistic development, and endless creativity! 🚀
+                {hero.description}
               </p>
             </div>
             
@@ -232,34 +254,30 @@ export default function Home() {
         <section id="about" className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Our Philosophy</h2>
-              <h3 className="text-4xl font-extrabold text-slate-900">Why Choose Prof. MVS Koteswara Rao Memorial School?</h3>
+              <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">{about.tag || "Our Philosophy"}</h2>
+              <h3 className="text-4xl font-extrabold text-slate-900">{about.title}</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:shadow-slate-200 transition-all duration-300 hover:-translate-y-1">
-                <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-6">
-                  <BookOpen className="w-7 h-7" />
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 mb-3">Quality Education</h4>
-                <p className="text-gray-600 leading-relaxed">We believe in empowering students with knowledge that transcends textbooks, preparing them for real-world challenges through interactive learning.</p>
-              </div>
-              
-              <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:shadow-slate-200 transition-all duration-300 hover:-translate-y-1">
-                <div className="w-14 h-14 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6">
-                  <Heart className="w-7 h-7" />
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 mb-3">Social Responsibility</h4>
-                <p className="text-gray-600 leading-relaxed">Instilling a sense of duty to pay back to the society that nurtures us is at the core of our educational philosophy.</p>
-              </div>
-              
-              <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:shadow-slate-200 transition-all duration-300 hover:-translate-y-1">
-                <div className="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-6">
-                  <Award className="w-7 h-7" />
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 mb-3">Holistic Growth</h4>
-                <p className="text-gray-600 leading-relaxed">Fostering excellence not just in academics, but in sports, arts, and character building for complete all-around development.</p>
-              </div>
+              {about.cards.map((card, idx) => {
+                const bgClass =
+                  card.color === "orange" ? "bg-orange-100 text-orange-600" :
+                  card.color === "red" ? "bg-red-100 text-red-600" :
+                  card.color === "indigo" ? "bg-indigo-100 text-indigo-600" :
+                  card.color === "emerald" ? "bg-emerald-100 text-emerald-600" :
+                  card.color === "purple" ? "bg-purple-100 text-purple-600" :
+                  "bg-blue-100 text-blue-600";
+
+                return (
+                  <div key={card.id || idx} className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:shadow-slate-200 transition-all duration-300 hover:-translate-y-1">
+                    <div className={`w-14 h-14 ${bgClass} rounded-2xl flex items-center justify-center mb-6`}>
+                      {idx === 0 ? <BookOpen className="w-7 h-7" /> : idx === 1 ? <Heart className="w-7 h-7" /> : <Award className="w-7 h-7" />}
+                    </div>
+                    <h4 className="text-xl font-bold text-slate-900 mb-3">{card.title}</h4>
+                    <p className="text-gray-600 leading-relaxed">{card.description}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -269,27 +287,23 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col lg:flex-row gap-16 items-center">
               <div className="lg:w-1/2">
-                <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Curriculum</h2>
-                <h3 className="text-4xl font-extrabold text-slate-900 mb-6">Academic Excellence</h3>
+                <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">{academics.tag || "Curriculum"}</h2>
+                <h3 className="text-4xl font-extrabold text-slate-900 mb-6">{academics.title}</h3>
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Our comprehensive English Medium curriculum is designed to stimulate intellectual curiosity and foster a lifelong love for learning. We maintain optimal student-teacher ratios for personalized attention.
+                  {academics.description}
                 </p>
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-center gap-3 text-slate-700 font-medium">
-                    <span className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">✓</span> Pre-Primary & Nursery Education
-                  </li>
-                  <li className="flex items-center gap-3 text-slate-700 font-medium">
-                    <span className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">✓</span> Primary & Middle School (E.M)
-                  </li>
-                  <li className="flex items-center gap-3 text-slate-700 font-medium">
-                    <span className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">✓</span> High School State Board & Digital Learning
-                  </li>
+                  {academics.programs.map((item, idx) => (
+                    <li key={item.id || idx} className="flex items-center gap-3 text-slate-700 font-medium">
+                      <span className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">✓</span> {item.text}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="lg:w-1/2 relative">
                 <img 
-                  src="/event-1.jpg" 
-                  alt="Academic and extracurricular activities at Prof. MVS Koteswara Rao Memorial School, Mandapeta" 
+                  src={academics.image || "/event-1.jpg"} 
+                  alt={`Academic programs at ${hero.schoolTitle}`} 
                   className="rounded-3xl shadow-2xl object-cover h-80 w-full" 
                   width={600}
                   height={320}
@@ -319,7 +333,7 @@ export default function Home() {
                 >
                   <img
                     src={img.url}
-                    alt={`${img.title} - Prof. MVS Koteswara Rao Memorial School Mandapeta`}
+                    alt={`${img.title} - ${hero.schoolTitle}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"
                   />
@@ -353,7 +367,7 @@ export default function Home() {
                   <div className="h-80 sm:h-96 overflow-hidden bg-slate-200 relative">
                     <img
                       src={staff.img || "/event-1.jpg"}
-                      alt={`${staff.name}, ${staff.role} at Prof. MVS Koteswara Rao Memorial School`}
+                      alt={`${staff.name}, ${staff.role} at ${hero.schoolTitle}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
@@ -425,22 +439,22 @@ export default function Home() {
         {/* 6. Online Donations */}
         <section id="donations" className="py-24 bg-orange-50 border-t border-orange-100" aria-label="Support and Online Donations">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Support Us</h2>
-            <h3 className="text-4xl font-extrabold text-slate-900 mb-8">For Online Donations</h3>
+            <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">{support.tag || "Support Us"}</h2>
+            <h3 className="text-4xl font-extrabold text-slate-900 mb-8">{support.title || "For Online Donations"}</h3>
             <div className="bg-white p-10 rounded-3xl shadow-xl border border-orange-100 text-left md:text-center">
-              <h4 className="text-2xl font-bold text-slate-800 mb-6">Prof. MVS Koteswara Rao Memorial School</h4>
+              <h4 className="text-2xl font-bold text-slate-800 mb-6">{support.schoolName}</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
                   <p className="text-gray-500 text-sm font-semibold mb-1 uppercase tracking-wider">Bank</p>
-                  <p className="font-bold text-slate-900 text-xl">Union Bank</p>
+                  <p className="font-bold text-slate-900 text-xl">{support.bankName}</p>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
                   <p className="text-gray-500 text-sm font-semibold mb-1 uppercase tracking-wider">Account Number</p>
-                  <p className="font-bold text-slate-900 text-xl font-mono tracking-widest">{settings.bankAccount}</p>
+                  <p className="font-bold text-slate-900 text-xl font-mono tracking-widest">{support.accountNumber}</p>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 md:col-span-2 hover:shadow-md transition-shadow">
                   <p className="text-gray-500 text-sm font-semibold mb-1 uppercase tracking-wider">IFSC Code</p>
-                  <p className="font-bold text-slate-900 text-xl font-mono tracking-widest">{settings.ifsc}</p>
+                  <p className="font-bold text-slate-900 text-xl font-mono tracking-widest">{support.ifsc}</p>
                 </div>
               </div>
             </div>
@@ -452,9 +466,9 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
               <div className="md:col-span-1">
-                <h3 className="text-2xl font-bold text-white mb-6">Prof. MVS Koteswara Rao Memorial School</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">{hero.schoolTitle}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  {settings.heroQuote} Nurturing students to become responsible, educated citizens of tomorrow.
+                  {contact.footerAbout}
                 </p>
               </div>
               
@@ -476,15 +490,15 @@ export default function Home() {
                   <ul className="space-y-4">
                     <li className="flex items-start gap-4">
                       <MapPin className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" aria-hidden="true" />
-                      <span className="text-sm">{settings.address}</span>
+                      <span className="text-sm">{contact.address}</span>
                     </li>
                     <li className="flex items-center gap-4">
                       <Phone className="w-5 h-5 text-orange-500 shrink-0" aria-hidden="true" />
-                      <a href={`tel:${settings.phone}`} className="text-sm hover:text-orange-400 transition-colors">{settings.phone}</a>
+                      <a href={`tel:${contact.phone}`} className="text-sm hover:text-orange-400 transition-colors">{contact.phone}</a>
                     </li>
                     <li className="flex items-center gap-4">
                       <Mail className="w-5 h-5 text-orange-500 shrink-0" aria-hidden="true" />
-                      <a href={`mailto:${settings.email}`} className="text-sm hover:text-orange-400 transition-colors">{settings.email}</a>
+                      <a href={`mailto:${contact.email}`} className="text-sm hover:text-orange-400 transition-colors">{contact.email}</a>
                     </li>
                   </ul>
                 </address>
@@ -492,7 +506,7 @@ export default function Home() {
             </div>
             
             <div className="pt-8 border-t border-slate-800 text-center text-sm text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p>&copy; {new Date().getFullYear()} Prof. MVS Koteswara Rao Memorial School. All rights reserved.</p>
+              <p>&copy; {new Date().getFullYear()} {hero.schoolTitle}. All rights reserved.</p>
               <div className="flex gap-4">
                 <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
                 <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
