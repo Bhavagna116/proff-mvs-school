@@ -73,9 +73,10 @@ async function writeToSupabase(data: any) {
     await supabase.storage.createBucket(BUCKET_NAME, { public: true }).catch(() => {});
     
     const jsonString = JSON.stringify(data, null, 2);
+    const buffer = Buffer.from(jsonString, "utf-8");
     const { error } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(FILE_NAME, jsonString, {
+      .upload(FILE_NAME, buffer, {
         contentType: "application/json",
         upsert: true
       });

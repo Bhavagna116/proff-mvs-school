@@ -480,10 +480,11 @@ export default function AdminDashboard() {
   const [newCpPhoto, setNewCpPhoto] = useState("");
   const [cpFileName, setCpFileName] = useState("");
 
-  const handleSaveContact = (e: React.FormEvent) => {
+  const handleSaveContact = async (e: React.FormEvent) => {
     e.preventDefault();
-    cmsStore.setContact(contact);
-    showToast("Contact details and footer updated!");
+    showToast("Saving contact & address to cloud...");
+    await cmsStore.setContact(contact);
+    showToast("Contact details & address saved to cloud successfully!");
   };
 
   const handleCpFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -501,7 +502,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleAddContactPerson = (e: React.FormEvent) => {
+  const handleAddContactPerson = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCpName.trim() || !newCpPhone.trim()) {
       showToast("Please enter at least Contact Name and Phone Number!");
@@ -524,7 +525,7 @@ export default function AdminDashboard() {
     };
 
     setContact(updated);
-    cmsStore.setContact(updated);
+    await cmsStore.setContact(updated);
     setNewCpName("");
     setNewCpRole("");
     setNewCpPhone("");
@@ -534,7 +535,7 @@ export default function AdminDashboard() {
     if (cpFileInputRef.current) {
       cpFileInputRef.current.value = "";
     }
-    showToast(`Added ${newPerson.name} under Contact Us!`);
+    showToast(`Added ${newPerson.name} under Contact Us & synced to cloud!`);
   };
 
   const handleEditCpFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -551,7 +552,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleSaveEditContactPerson = (e: React.FormEvent) => {
+  const handleSaveEditContactPerson = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingContactPerson) return;
     const currentPersons = contact.persons && contact.persons.length > 0 ? contact.persons : defaultContactPersons;
@@ -560,18 +561,18 @@ export default function AdminDashboard() {
     );
     const updated = { ...contact, persons: updatedPersons };
     setContact(updated);
-    cmsStore.setContact(updated);
+    await cmsStore.setContact(updated);
     setEditingContactPerson(null);
-    showToast(`Updated details & photo for ${editingContactPerson.name}!`);
+    showToast(`Updated details & photo for ${editingContactPerson.name} on cloud!`);
   };
 
-  const handleDeleteContactPerson = (id: string) => {
+  const handleDeleteContactPerson = async (id: string) => {
     const currentPersons = contact.persons && contact.persons.length > 0 ? contact.persons : defaultContactPersons;
     const updatedPersons = currentPersons.filter((p) => p.id !== id);
     const updated = { ...contact, persons: updatedPersons };
     setContact(updated);
-    cmsStore.setContact(updated);
-    showToast("Contact person removed!");
+    await cmsStore.setContact(updated);
+    showToast("Contact person removed from cloud!");
   };
 
   // ==========================================
@@ -579,24 +580,24 @@ export default function AdminDashboard() {
   // ==========================================
   const [newHeroImgUrl, setNewHeroImgUrl] = useState("");
 
-  const handleSaveHero = (e: React.FormEvent) => {
+  const handleSaveHero = async (e: React.FormEvent) => {
     e.preventDefault();
-    cmsStore.setHero(hero);
+    await cmsStore.setHero(hero);
     showToast("Hero banner and quotes updated live!");
   };
 
-  const handleHeroFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleHeroFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         if (typeof event.target?.result === "string") {
           const updated = {
             ...hero,
             images: [event.target.result, ...(hero.images || [])]
           };
           setHero(updated);
-          cmsStore.setHero(updated);
+          await cmsStore.setHero(updated);
           showToast(`Added "${file.name}" to Hero background slideshow!`);
         }
       };

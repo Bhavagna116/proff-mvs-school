@@ -295,6 +295,8 @@ const KEY_TO_SECTION: Record<string, string> = {
   [KEYS.SETTINGS]: "settings"
 };
 
+let lastSaveTimestamp = 0;
+
 function safeGet<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
@@ -305,26 +307,28 @@ function safeGet<T>(key: string, fallback: T): T {
   }
 }
 
-function safeSet<T>(key: string, value: T): void {
-  if (typeof window === "undefined") return;
+async function safeSet<T>(key: string, value: T): Promise<boolean> {
+  if (typeof window === "undefined") return false;
+  lastSaveTimestamp = Date.now();
   try {
     localStorage.setItem(key, JSON.stringify(value));
     window.dispatchEvent(new Event("mvs_cms_update"));
     window.dispatchEvent(new Event("storage"));
 
-    // Persist to server API in background so changes reflect across all devices/phones
+    // Persist to server API & Supabase cloud
     const sectionName = KEY_TO_SECTION[key];
     if (sectionName) {
-      fetch("/api/cms", {
+      const res = await fetch("/api/cms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ section: sectionName, data: value })
-      }).catch((err) => {
-        console.warn("Background server sync error:", err);
       });
+      return res.ok;
     }
+    return true;
   } catch (e) {
-    console.error("Failed to save to localStorage", e);
+    console.error("Failed to save to localStorage / server", e);
+    return false;
   }
 }
 
@@ -374,6 +378,9 @@ export const cmsStore = {
 
   syncFromServer: async (): Promise<boolean> => {
     if (typeof window === "undefined") return false;
+    // If a save occurred in the last 4 seconds, don't let a background poll overwrite local state
+    if (Date.now() - lastSaveTimestamp < 4000) return false;
+
     try {
       const res = await fetch("/api/cms", {
         cache: "no-store",
@@ -408,5 +415,6 @@ export const cmsStore = {
 if (typeof window !== "undefined") {
   cmsStore.syncFromServer();
 }
+
 
 
