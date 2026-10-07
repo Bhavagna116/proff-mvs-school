@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Prof. MVS Koteswara Rao Memorial School, Mandapeta";
+export const alt = "Prof. MVS Koteswara Rao Memorial School, Guntur";
 
 export const size = {
   width: 1200,
@@ -76,7 +76,7 @@ export default async function Image() {
             textAlign: "center",
           }}
         >
-          Mandapeta, Andhra Pradesh • English Medium Pre-Primary to High School
+          Guntur, Andhra Pradesh • English Medium Pre-Primary to High School
         </p>
       </div>
     ),

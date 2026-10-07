@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Prof. MVS Koteswara Rao Memorial School",
     short_name: "MVS Memorial School",
     description:
-      "Official Portal of Prof. MVS Koteswara Rao Memorial School, Mandapeta - Nurturing future leaders through quality English medium education.",
+      "Official Portal of Prof. MVS Koteswara Rao Memorial School, Guntur - Nurturing future leaders through quality English medium education.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

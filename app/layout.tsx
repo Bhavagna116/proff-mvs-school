@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mvsschool-mandapeta.edu.in";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mvsschool.com";
 
 export const viewport: Viewport = {
   themeColor: "#ea580c",
@@ -25,11 +25,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Prof. MVS Koteswara Rao Memorial School | Mandapeta",
+    default: "Prof. MVS Koteswara Rao Memorial School | Guntur",
     template: "%s | Prof. MVS Koteswara Rao Memorial School",
   },
   description:
-    "Official portal for Prof. MVS Koteswara Rao Memorial School, Mandapeta, Andhra Pradesh. Offering English medium pre-primary, primary, middle & high school education with holistic development and modern facilities. Admissions Open 2026-27.",
+    "Official portal for Prof. MVS Koteswara Rao Memorial School, Guntur, Andhra Pradesh. Offering English medium pre-primary, primary, middle & high school education with holistic development and modern facilities. Admissions Open 2026-27.",
   applicationName: "Prof. MVS Koteswara Rao Memorial School",
   authors: [
     {
@@ -40,19 +40,20 @@ export const metadata: Metadata = {
   generator: "Next.js",
   keywords: [
     "Prof. MVS Koteswara Rao Memorial School",
-    "MVS School Mandapeta",
-    "MVS Memorial School Mandapeta",
-    "Best school in Mandapeta",
-    "Schools in Mandapeta",
-    "English Medium School Mandapeta",
-    "Primary School Mandapeta",
-    "High School Mandapeta",
-    "School admissions Mandapeta",
-    "Admissions Open 2026-27 Mandapeta",
-    "Quality education Mandapeta",
-    "Konaseema schools",
-    "East Godavari schools Andhra Pradesh",
-    "Top rated schools in Mandapeta AP",
+    "Prof. M.V.S. Koteswara Rao Memorial Public School",
+    "MVS School Guntur",
+    "MVS Memorial School Guntur",
+    "Best school in Guntur",
+    "Schools in Guntur",
+    "English Medium School Guntur",
+    "Primary School Guntur",
+    "High School Guntur",
+    "School admissions Guntur",
+    "Admissions Open 2026-27 Guntur",
+    "Quality education Guntur",
+    "Guntur schools",
+    "Guntur schools Andhra Pradesh",
+    "Top rated schools in Guntur AP",
   ],
   creator: "Prof. MVS Koteswara Rao Memorial School",
   publisher: "Prof. MVS Koteswara Rao Memorial School",
@@ -70,9 +71,9 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: baseUrl,
     siteName: "Prof. MVS Koteswara Rao Memorial School",
-    title: "Prof. MVS Koteswara Rao Memorial School | Mandapeta",
+    title: "Prof. MVS Koteswara Rao Memorial School | Guntur",
     description:
-      "Continuing the legacy of quality education. Nurturing the leaders of tomorrow with holistic development, values, and modern curriculum in Mandapeta, AP. Admissions Open 2026-27.",
+      "Continuing the legacy of quality education. Nurturing the leaders of tomorrow with holistic development, values, and modern curriculum in Guntur, AP. Admissions Open 2026-27.",
     images: [
       {
         url: "/logo.png",
@@ -90,9 +91,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Prof. MVS Koteswara Rao Memorial School | Mandapeta",
+    title: "Prof. MVS Koteswara Rao Memorial School | Guntur",
     description:
-      "Quality English Medium education in Mandapeta, AP. Admissions Open 2026-27. Nurturing future leaders.",
+      "Quality English Medium education in Guntur, AP. Admissions Open 2026-27. Nurturing future leaders.",
     images: ["/event-1.jpg"],
   },
   robots: {
@@ -121,9 +122,9 @@ export const metadata: Metadata = {
   other: {
     "google-site-verification": "googlef4595adaa8cfbd74",
     "geo.region": "IN-AP",
-    "geo.placename": "Mandapeta",
-    "geo.position": "16.8687;81.9312",
-    "ICBM": "16.8687, 81.9312",
+    "geo.placename": "Guntur",
+    "geo.position": "16.3067;80.4365",
+    "ICBM": "16.3067, 80.4365",
   },
 };
 
@@ -135,7 +136,8 @@ const structuredData = {
       "@id": `${baseUrl}/#school`,
       name: "Prof. MVS Koteswara Rao Memorial School",
       alternateName: [
-        "MVS School Mandapeta",
+        "Prof. M.V.S. Koteswara Rao Memorial Public School",
+        "MVS School Guntur",
         "MVS Memorial School",
         "Prof. MVS Koteswara Rao Memorial School",
       ],
@@ -143,20 +145,20 @@ const structuredData = {
       logo: `${baseUrl}/logo.png`,
       image: `${baseUrl}/event-1.jpg`,
       description:
-        "Prof. MVS Koteswara Rao Memorial School in Mandapeta offers holistic, high-quality English medium education from pre-primary through high school.",
+        "Prof. MVS Koteswara Rao Memorial School in Guntur offers holistic, high-quality English medium education from pre-primary through high school.",
       slogan: "It's our responsibility to pay back to the SOCIETY",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Prof. MVS Koteswara Rao Memorial School",
-        addressLocality: "Mandapeta",
+        streetAddress: "Sundaraiah Nagar, Adavithakkellapadu Road",
+        addressLocality: "Guntur",
         addressRegion: "Andhra Pradesh",
-        postalCode: "533308",
+        postalCode: "522006",
         addressCountry: "IN",
       },
       geo: {
         "@type": "GeoCoordinates",
-        latitude: 16.8687,
-        longitude: 81.9312,
+        latitude: 16.3067,
+        longitude: 80.4365,
       },
       telephone: "+91-9849532787",
       email: "mvskchool22754@gmail.com",
@@ -217,7 +219,7 @@ const structuredData = {
       url: baseUrl,
       name: "Prof. MVS Koteswara Rao Memorial School",
       description:
-        "Official portal for Prof. MVS Koteswara Rao Memorial School, Mandapeta",
+        "Official portal for Prof. MVS Koteswara Rao Memorial School, Guntur",
       publisher: {
         "@id": `${baseUrl}/#school`,
       },

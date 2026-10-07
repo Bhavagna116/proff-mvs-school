@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mvsschool-mandapeta.edu.in";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mvsschool.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date();

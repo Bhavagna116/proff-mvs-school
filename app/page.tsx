@@ -362,7 +362,7 @@ export default function Home() {
               <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Our Faculty & Leadership</h2>
               <h3 className="text-4xl sm:text-5xl font-extrabold text-slate-900">Meet Our Dedicated Staff</h3>
               <p className="mt-4 text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
-                Our highly qualified teaching and non-teaching staff are committed to nurturing the potential within every student in Mandapeta.
+                Our highly qualified teaching and non-teaching staff are committed to nurturing the potential within every student in Guntur.
               </p>
             </div>
             

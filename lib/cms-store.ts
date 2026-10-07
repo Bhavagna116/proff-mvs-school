@@ -106,7 +106,7 @@ export const defaultHero: HeroSectionData = {
   schoolTitle: "Prof. MVS Koteswara Rao Memorial School",
   sloganQuote: `"It's our responsibility to pay back to the SOCIETY"`,
   description:
-    "Continuing the legacy of providing accessible, high-quality education in Mandapeta. We nurture the leaders of tomorrow with fun, holistic development, and endless creativity! 🚀",
+    "Continuing the legacy of providing accessible, high-quality education in Guntur. We nurture the leaders of tomorrow with fun, holistic development, and endless creativity! 🚀",
   images: [
     "/event-1.jpg",
     "/event-2.jpg",
@@ -193,7 +193,7 @@ export const defaultContact: ContactSectionData = {
   title: "Get in Touch With Us",
   phone: "9849532787",
   email: "mvskchool22754@gmail.com",
-  address: "Prof. MVS Koteswara Rao Memorial School, Mandapeta, Andhra Pradesh, India.",
+  address: "Prof. MVS Koteswara Rao Memorial School, Sundaraiah Nagar, Adavithakkellapadu Road, Guntur, Andhra Pradesh 522006, India.",
   footerAbout: `"It's our responsibility to pay back to the SOCIETY" Nurturing students to become responsible, educated citizens of tomorrow.`,
   persons: defaultContactPersons
 };
@@ -259,7 +259,7 @@ export const defaultSettings: SchoolSettings = {
   heroQuote: `"It's our responsibility to pay back to the SOCIETY"`,
   phone: "9849532787",
   email: "mvskchool22754@gmail.com",
-  address: "Prof. MVS Koteswara Rao Memorial School, Mandapeta, Andhra Pradesh, India.",
+  address: "Prof. MVS Koteswara Rao Memorial School, Sundaraiah Nagar, Adavithakkellapadu Road, Guntur, Andhra Pradesh 522006, India.",
   bankAccount: "156910100118069",
   ifsc: "UBIN0815691"
 };
