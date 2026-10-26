@@ -56,6 +56,7 @@ export interface AcademicsSectionData {
 
 export interface HeroSectionData {
   admissionsTag: string;
+  showAdmissions?: boolean;
   schoolTitle: string;
   sloganQuote: string;
   description: string;
@@ -103,6 +104,7 @@ export interface SchoolSettings {
 // Initial Defaults
 export const defaultHero: HeroSectionData = {
   admissionsTag: "✨ Admissions Open for 2026-27 ✨",
+  showAdmissions: false,
   schoolTitle: "Prof. MVS Koteswara Rao Memorial School",
   sloganQuote: `"It's our responsibility to pay back to the SOCIETY"`,
   description:
@@ -333,7 +335,14 @@ async function safeSet<T>(key: string, value: T): Promise<boolean> {
 }
 
 export const cmsStore = {
-  getHero: (): HeroSectionData => safeGet(KEYS.HERO, defaultHero),
+  getHero: (): HeroSectionData => {
+    const raw = safeGet<HeroSectionData>(KEYS.HERO, defaultHero);
+    return {
+      ...defaultHero,
+      ...raw,
+      showAdmissions: typeof raw?.showAdmissions === "boolean" ? raw.showAdmissions : false
+    };
+  },
   setHero: (v: HeroSectionData) => safeSet(KEYS.HERO, v),
 
   getAbout: (): AboutSectionData => safeGet(KEYS.ABOUT, defaultAbout),

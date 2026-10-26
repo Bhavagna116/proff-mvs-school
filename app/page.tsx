@@ -197,7 +197,7 @@ export default function Home() {
           </div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {hero.admissionsTag && (
+            {hero.showAdmissions && hero.admissionsTag && (
               <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 text-white font-bold text-sm mb-6 shadow-xl shadow-orange-200 animate-bounce">
                 {hero.admissionsTag}
               </div>

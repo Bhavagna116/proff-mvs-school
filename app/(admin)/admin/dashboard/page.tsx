@@ -23,7 +23,9 @@ import {
   Layers,
   PhoneCall,
   Phone,
-  Edit3
+  Edit3,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import {
   cmsStore,
@@ -580,6 +582,21 @@ export default function AdminDashboard() {
   // ==========================================
   const [newHeroImgUrl, setNewHeroImgUrl] = useState("");
 
+  const handleToggleAdmissions = async (newVal?: boolean) => {
+    const updatedState = newVal !== undefined ? newVal : !hero.showAdmissions;
+    const updated: HeroSectionData = {
+      ...hero,
+      showAdmissions: updatedState
+    };
+    setHero(updated);
+    await cmsStore.setHero(updated);
+    showToast(
+      updatedState
+        ? "✨ Admissions Badge ACTIVATED! It is now visible on the website."
+        : "🚫 Admissions Badge DEACTIVATED! It is now hidden from the website."
+    );
+  };
+
   const handleSaveHero = async (e: React.FormEvent) => {
     e.preventDefault();
     await cmsStore.setHero(hero);
@@ -712,6 +729,69 @@ export default function AdminDashboard() {
             <Globe className="w-5 h-5 text-emerald-400" />
             <span>Preview Live Site</span>
           </a>
+        </div>
+      </div>
+
+      {/* Quick Admissions Badge Controller */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-center gap-4 min-w-0">
+          <div
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
+              hero.showAdmissions
+                ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 ring-2 ring-emerald-400/30"
+                : "bg-slate-800 text-slate-400 border border-slate-700"
+            }`}
+          >
+            {hero.showAdmissions ? <Sparkles className="w-6 h-6 animate-pulse" /> : <EyeOff className="w-6 h-6" />}
+          </div>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-base sm:text-lg font-bold text-white">
+                Admissions Tag Badge
+              </h3>
+              <span
+                className={`text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 ${
+                  hero.showAdmissions
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                    : "bg-rose-500/10 text-rose-300 border border-rose-500/20"
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    hero.showAdmissions ? "bg-emerald-400 animate-ping" : "bg-rose-400"
+                  }`}
+                />
+                {hero.showAdmissions ? "Activated (Showing on Website)" : "Deactivated (Hidden from Website)"}
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 truncate">
+              {hero.showAdmissions
+                ? `Active on website: "${hero.admissionsTag}"`
+                : "Currently hidden from website. Click Activate to display it on the homepage."}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 w-full md:w-auto shrink-0">
+          {hero.showAdmissions ? (
+            <button
+              type="button"
+              onClick={() => handleToggleAdmissions(false)}
+              className="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold px-5 py-2.5 rounded-xl transition-all shadow-md text-sm cursor-pointer"
+            >
+              <EyeOff className="w-4 h-4" />
+              <span>Deactivate / Hide from Website</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => handleToggleAdmissions(true)}
+              className="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-orange-500/25 text-sm cursor-pointer active:scale-95"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Activate Admissions Badge</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -1742,16 +1822,60 @@ export default function AdminDashboard() {
               Hero Banner, Titles & Quotes
             </h3>
             <form onSubmit={handleSaveHero} className="space-y-4 max-w-3xl">
-              <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">
-                  Admissions Tag Badge
-                </label>
-                <input
-                  type="text"
-                  value={hero.admissionsTag}
-                  onChange={(e) => setHero({ ...hero, admissionsTag: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500"
-                />
+              <div className="bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <label className="block text-sm font-bold text-white">
+                      Admissions Tag Badge
+                    </label>
+                    <p className="text-xs text-slate-400">
+                      Display pill badge above the school title on the main website.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleToggleAdmissions()}
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+                      hero.showAdmissions
+                        ? "bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/30"
+                        : "bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30"
+                    }`}
+                  >
+                    {hero.showAdmissions ? (
+                      <>
+                        <EyeOff className="w-3.5 h-3.5" />
+                        <span>Deactivate Badge</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>Activate on Website</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={hero.admissionsTag}
+                    onChange={(e) => setHero({ ...hero, admissionsTag: e.target.value })}
+                    placeholder="e.g. ✨ Admissions Open for 2026-27 ✨"
+                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 text-sm"
+                  />
+                  <div className="flex items-center gap-2 pt-1">
+                    <span className="text-xs text-slate-500 font-semibold">Live Website State:</span>
+                    {hero.showAdmissions ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 text-white font-bold text-xs shadow-md">
+                        {hero.admissionsTag || "✨ Admissions Open for 2026-27 ✨"}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-slate-500 italic">
+                        Deactivated (Hidden — will not appear on the website)
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div>

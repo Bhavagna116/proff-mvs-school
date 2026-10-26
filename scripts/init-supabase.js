@@ -10,6 +10,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 const defaultFullData = {
   hero: {
     admissionsTag: "✨ Admissions Open for 2026-27 ✨",
+    showAdmissions: false,
     schoolTitle: "Prof. MVS Koteswara Rao Memorial School",
     sloganQuote: `"It's our responsibility to pay back to the SOCIETY"`,
     description: "Continuing the legacy of providing accessible, high-quality education in Guntur. We nurture the leaders of tomorrow with fun, holistic development, and endless creativity! 🚀",
