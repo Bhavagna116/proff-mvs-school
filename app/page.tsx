@@ -277,205 +277,286 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3. Core Values & About with Scrolling History Journey */}
-        <section id="about" className="py-24 bg-gradient-to-b from-white via-orange-50/20 to-white relative overflow-hidden">
-          {/* Subtle decorative background blur glow */}
-          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-r from-orange-200/20 via-pink-200/20 to-purple-200/20 blur-3xl pointer-events-none -z-10" />
-
+        {/* 3. Core Values & About — Official Founding Charter & Milestones */}
+        <section id="about" className="py-24 bg-gradient-to-b from-slate-50 via-white to-slate-50 relative overflow-hidden border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Top Story Header */}
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-100/80 border border-orange-200 text-orange-700 text-xs font-extrabold uppercase tracking-widest mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-orange-500" />
-                {about.historyTag || "A Small Initiative for a Better Society"}
-              </span>
-              <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
-                {about.historyTitle || "Our Genesis, Ideology & Milestones"}
-              </h2>
-              <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
-                {about.historySubtitle ||
-                  "Sponsored by AUASD (Andhra University Alumni for Sustainable Development) — Born from a sacred conviction to pay back to society through high-quality, accessible education."}
-              </p>
-            </div>
-
-            {/* Horizontal Scrolling History Showcase */}
-            <div className="relative mb-20">
-              {/* Controls Header: Status & Arrows */}
-              <div className="flex items-center justify-between mb-4 px-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                  <span>Interactive Story Reel • Swipe or Scroll Horizontally</span>
+            
+            {/* 1. Official Institutional Seal & Charter Header */}
+            <div className="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white border border-slate-800 shadow-2xl mb-16 relative overflow-hidden">
+              <div className="absolute right-0 top-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+              <div className="relative z-10">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-6 mb-8">
+                  <div className="flex items-center gap-3">
+                    <span className="w-3 h-3 rounded-full bg-amber-400 animate-pulse" />
+                    <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-amber-400">
+                      Sponsored by AUASD • Registered Trust at Hyderabad
+                    </span>
+                  </div>
+                  <span className="text-xs font-semibold text-slate-400 bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-700">
+                    A Small Initiative for a Better Society
+                  </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="max-w-4xl">
+                  <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white mb-4 leading-tight">
+                    The Founding Charter & History
+                  </h2>
+                  <p className="text-lg sm:text-xl font-bold text-orange-400 mb-4">
+                    Prof. MVS Koteswara Rao Memorial Public School
+                  </p>
+                  <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 font-normal">
+                    Constituted by alumni across multiple disciplines from <strong className="text-white">Andhra University</strong> (predominantly 1975 &amp; 1985 batches), AUASD was established to bridge the educational divide in slum areas. <strong className="text-white">Late Prof. M.V.S. Koteswara Rao</strong> was one of the foremost alumni visionaries whose tireless service sculpted the trust and its community welfare missions.
+                  </p>
+
+                  {/* 4 Constituent Colleges Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                    {[
+                      { title: "A.U. College of Engineering", icon: Building2, desc: "Technical & Analytical Rigor" },
+                      { title: "A.U. College of Science & Technology", icon: Sparkles, desc: "Scientific Inquiry & Modern Thought" },
+                      { title: "A.U. Arts College", icon: BookOpen, desc: "Humanities, Culture & Social Values" },
+                      { title: "A.U. Law College", icon: Target, desc: "Justice, Equity & Civic Duty" }
+                    ].map((col, idx) => {
+                      const Icon = col.icon;
+                      return (
+                        <div key={idx} className="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 flex items-start gap-3 hover:border-amber-500/40 transition-all">
+                          <div className="w-9 h-9 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 border border-orange-500/20">
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-white leading-snug">{col.title}</h4>
+                            <p className="text-[11px] text-slate-400 mt-0.5">{col.desc}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Core Ideology & The Four Institutional Mandates (Goals) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
+              {/* Left: Ideology */}
+              <div className="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-xl flex flex-col justify-between">
+                <div>
+                  <span className="text-xs font-bold text-orange-600 uppercase tracking-widest mb-2 block">
+                    Founding Ideology
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-5 leading-snug">
+                    A Moral Obligation: &ldquo;Paying Back to Society&rdquo;
+                  </h3>
+                  <div className="space-y-4 text-slate-600 leading-relaxed text-sm sm:text-base">
+                    <p>
+                      In decades past, students were educated in schools, colleges, and Government-aided institutions funded by taxpayer contributions. Having benefited from this societal investment, our founding alumni recognized an undeniable ethical duty to return that gift to the society that helped them become who they are.
+                    </p>
+                    <p>
+                      Observing that private-sector education had become an unaffordable barrier for poor families in slum areas—leading to severe developmental deprivation—the alumni resolved to establish an institution providing high-standard, values-based English Medium education from nursery onwards.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-slate-100 bg-amber-50/80 -mx-8 -mb-8 sm:-mx-10 sm:-mb-10 p-6 sm:p-8 rounded-b-3xl border-t border-amber-200/50">
+                  <p className="text-sm sm:text-base font-extrabold text-slate-900 italic">
+                    &ldquo;Today&apos;s child is tomorrow&apos;s nation. When educational aspects are absent in the lives of the poor, children suffer. We exist to build high standards and impart lifelong disciplines.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+              {/* Right: Institutional Goals */}
+              <div className="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-xl flex flex-col justify-between">
+                <div>
+                  <span className="text-xs font-bold text-orange-600 uppercase tracking-widest mb-2 block">
+                    Institutional Charter
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-5 leading-snug">
+                    Four Pillars of Our Mission
+                  </h3>
+                  <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+                    Formally defined by the AUASD Board of Trustees, these core tenets govern every curriculum choice and student development initiative:
+                  </p>
+
+                  <div className="space-y-4">
+                    {[
+                      {
+                        num: "01",
+                        title: "Universal Access for the Underprivileged",
+                        desc: "To educate poor children from slum settlements who cannot afford private school fees, providing an equal launchpad in life."
+                      },
+                      {
+                        num: "02",
+                        title: "Equip with Transformative Knowledge",
+                        desc: "To impart comprehensive English Medium curriculum, analytical reasoning, and digital literacy that elevate life prospects."
+                      },
+                      {
+                        num: "03",
+                        title: "Foster Complete Self-Sustainability",
+                        desc: "To instill practical skills, self-reliance, emotional resilience, and confidence so students thrive independently."
+                      },
+                      {
+                        num: "04",
+                        title: "Give Responsible Citizens to the Nation",
+                        desc: "To nurture disciplined, empathetic, and value-driven individuals dedicated to contributing constructively to the country."
+                      }
+                    ].map((g, idx) => (
+                      <div key={idx} className="flex items-start gap-4 p-3.5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-orange-200 transition-all">
+                        <span className="w-9 h-9 rounded-xl bg-orange-100 text-orange-700 font-black text-sm flex items-center justify-center shrink-0">
+                          {g.num}
+                        </span>
+                        <div>
+                          <h4 className="text-sm font-bold text-slate-900">{g.title}</h4>
+                          <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{g.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Chronological Institutional Milestones (Scrolling Phase Dossier) */}
+            <div className="mb-20">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                  <span className="text-xs font-bold text-orange-600 uppercase tracking-widest block mb-2">
+                    Formation &amp; Milestones
+                  </span>
+                  <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                    The Phased Development of Our Campus
+                  </h3>
+                  <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
+                    From 600 sq. yards of donated land in Sundaraiah Nagar to an expansive, multi-story educational campus equipped with modern laboratories and digital classrooms.
+                  </p>
+                </div>
+
+                {/* Navigation Arrows for Horizontal Scrolling */}
+                <div className="flex items-center gap-3 shrink-0">
                   <button
                     type="button"
                     onClick={() => scrollTimeline("left")}
-                    aria-label="Scroll left"
-                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 hover:text-orange-600 hover:border-orange-400 hover:bg-orange-50 flex items-center justify-center shadow-md transition-all active:scale-90 cursor-pointer"
+                    aria-label="Scroll left to previous phase"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 font-bold text-xs hover:border-orange-500 hover:text-orange-600 hover:bg-orange-50 shadow-sm transition-all active:scale-95 cursor-pointer"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4" />
+                    <span>Previous Phase</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => scrollTimeline("right")}
-                    aria-label="Scroll right"
-                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 hover:text-orange-600 hover:border-orange-400 hover:bg-orange-50 flex items-center justify-center shadow-md transition-all active:scale-90 cursor-pointer"
+                    aria-label="Scroll right to next phase"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white font-bold text-xs hover:bg-orange-600 shadow-md transition-all active:scale-95 cursor-pointer"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <span>Next Phase</span>
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
-              {/* Scroll Track */}
+              {/* Horizontal Scroll Track — Institutional Phase Dossiers */}
               <div
                 ref={timelineScrollRef}
                 className="flex gap-6 overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-0"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
-                {(about.milestones && about.milestones.length > 0 ? about.milestones : defaultMilestones).map(
-                  (m, idx) => {
-                    const colorStyles =
-                      m.color === "orange"
-                        ? {
-                            badge: "bg-orange-100 text-orange-700 border-orange-200",
-                            iconBg: "bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-orange-500/20",
-                            border: "hover:border-orange-400",
-                            dot: "bg-orange-500"
-                          }
-                        : m.color === "blue"
-                        ? {
-                            badge: "bg-blue-100 text-blue-700 border-blue-200",
-                            iconBg: "bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-blue-500/20",
-                            border: "hover:border-blue-400",
-                            dot: "bg-blue-500"
-                          }
-                        : m.color === "emerald"
-                        ? {
-                            badge: "bg-emerald-100 text-emerald-700 border-emerald-200",
-                            iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-emerald-500/20",
-                            border: "hover:border-emerald-400",
-                            dot: "bg-emerald-500"
-                          }
-                        : m.color === "purple"
-                        ? {
-                            badge: "bg-purple-100 text-purple-700 border-purple-200",
-                            iconBg: "bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-purple-500/20",
-                            border: "hover:border-purple-400",
-                            dot: "bg-purple-500"
-                          }
-                        : m.color === "amber"
-                        ? {
-                            badge: "bg-amber-100 text-amber-700 border-amber-200",
-                            iconBg: "bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-amber-500/20",
-                            border: "hover:border-amber-400",
-                            dot: "bg-amber-500"
-                          }
-                        : {
-                            badge: "bg-rose-100 text-rose-700 border-rose-200",
-                            iconBg: "bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-rose-500/20",
-                            border: "hover:border-rose-400",
-                            dot: "bg-rose-500"
-                          };
-
-                    return (
-                      <div
-                        key={m.id || idx}
-                        className={`w-[320px] sm:w-[380px] md:w-[440px] shrink-0 snap-start bg-white rounded-3xl p-7 border border-slate-200 shadow-xl shadow-slate-100/70 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5 flex flex-col justify-between group ${colorStyles.border}`}
-                      >
-                        <div>
-                          {/* Card Top: Step & Badge */}
-                          <div className="flex items-center justify-between gap-3 mb-5">
-                            <span
-                              className={`text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full border shadow-sm ${colorStyles.badge}`}
-                            >
-                              {m.badge}
-                            </span>
-                            <span className="text-xs font-black text-slate-400">
-                              0{idx + 1} / 06
-                            </span>
-                          </div>
-
-                          {/* Icon & Subtitle Tag */}
-                          <div className="flex items-center gap-3 mb-3">
-                            <div
-                              className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg ${colorStyles.iconBg}`}
-                            >
-                              {idx === 0 ? (
-                                <GraduationCap className="w-5 h-5" />
-                              ) : idx === 1 ? (
-                                <HeartHandshake className="w-5 h-5" />
-                              ) : idx === 2 ? (
-                                <Target className="w-5 h-5" />
-                              ) : idx === 3 ? (
-                                <Building2 className="w-5 h-5" />
-                              ) : idx === 4 ? (
-                                <Library className="w-5 h-5" />
-                              ) : (
-                                <Sparkles className="w-5 h-5" />
-                              )}
-                            </div>
-                            <span className="text-xs font-bold text-orange-600 uppercase tracking-wider">
-                              {m.tag}
-                            </span>
-                          </div>
-
-                          {/* Title & Subtitle */}
-                          <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug mb-1">
-                            {m.title}
-                          </h3>
-                          {m.subtitle && (
-                            <p className="text-xs font-bold text-slate-500 mb-4">
-                              {m.subtitle}
-                            </p>
-                          )}
-
-                          {/* Narrative description */}
-                          <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                            {m.description}
-                          </p>
-
-                          {/* Optional highlight quote */}
-                          {m.quote && (
-                            <div className="bg-amber-50/80 border-l-4 border-amber-400 p-3 rounded-r-xl mb-4">
-                              <p className="text-xs font-extrabold text-amber-900 italic">
-                                &ldquo;{m.quote}&rdquo;
-                              </p>
-                            </div>
-                          )}
-
-                          {/* Points list */}
-                          {m.points && m.points.length > 0 && (
-                            <div className="space-y-2 mt-4 pt-4 border-t border-slate-100">
-                              {m.points.map((pt, pIdx) => (
-                                <div key={pIdx} className="flex items-start gap-2 text-xs font-semibold text-slate-700">
-                                  <span className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${colorStyles.dot}`} />
-                                  <span>{pt}</span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Card bottom bar */}
-                        <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-400">
-                          <span>MVS Memorial School Story</span>
-                          <span className="group-hover:translate-x-1 transition-transform text-orange-600 font-extrabold">
-                            →
+                {[
+                  {
+                    phase: "Phase I",
+                    period: "January – June 2016",
+                    title: "Land Grant, Construction & Inauguration",
+                    subtitle: "Sundaraiah Nagar, Adavithakkellapadu Road, Guntur-6",
+                    narrative:
+                      "AUASD was generously gifted 600 sq. yards of land by the Colony Welfare Association in Sundaraiah Nagar. Funded by contributions from society members and philanthropic well-wishers, construction of a single-story 3,600 sq. ft. building with six rooms commenced in January 2016. Following the untimely demise of Prof. M.V.S. Koteswara Rao, the school was dedicated in his memory as a perpetual tribute to his selfless social efforts. The school opened its doors in June 2016 from Nursery to 3rd Class with 150 students enrolled at nominal fees.",
+                    metrics: [
+                      { label: "Land Grant", value: "600 Sq. Yards (Colony Welfare Association)" },
+                      { label: "Initial Structure", value: "3,600 Sq. Ft. (6 Rooms, Ground Floor)" },
+                      { label: "Inaugural Batch", value: "150 Students (Nursery to 3rd Class)" },
+                      { label: "Fee Policy", value: "Highly Subsidized / Nominal Structure" }
+                    ]
+                  },
+                  {
+                    phase: "Phase II",
+                    period: "Academic Year 2017",
+                    title: "Second Floor Construction & Modern Facilities",
+                    subtitle: "Expanding Classrooms, Library & Audio-Visual Hall",
+                    narrative:
+                      "With strong community encouragement and rapidly rising student strength, an urgent need arose for additional instructional space. In 2017, AUASD planned and completed the second-floor construction, adding three expansive halls. This phase marked the curriculum expansion to 4th Standard, the establishment of a dedicated Library, Audio-Visual digital smart learning facilities, and spaces for interactive group-learning activities.",
+                    metrics: [
+                      { label: "Vertical Expansion", value: "Second Floor (3 Large Multi-Purpose Halls)" },
+                      { label: "Grade Addition", value: "4th Standard Curriculum Commenced" },
+                      { label: "Digital Learning", value: "Audio-Visual Smart Hall & Group Activities" },
+                      { label: "Knowledge Center", value: "Dedicated School Library Established" }
+                    ]
+                  },
+                  {
+                    phase: "Phase III",
+                    period: "2018 – Present",
+                    title: "5th Standard Addition & Complete Amenities",
+                    subtitle: "Distinguished Academic Results & Campus Maturity",
+                    narrative:
+                      "In the 2018-19 academic session, 5th standard was formally introduced, yielding extraordinary academic results and high learning engagement. In response to surging admissions, foundational pre-primary sections (Nursery & LKG) were transitioned into newly built wings. The campus reached full maturity with comprehensive basic amenities, safe play zones, clean drinking water, and hygienic sanitation.",
+                    metrics: [
+                      { label: "Upper Primary", value: "5th Standard Added with High Academic Results" },
+                      { label: "Early Childhood", value: "Dedicated Pre-Primary Wings for Nursery & LKG" },
+                      { label: "Campus Infrastructure", value: "Comprehensive Civic & Sanitary Amenities" },
+                      { label: "Educational Model", value: "Holistic Development, Values & Character" }
+                    ]
+                  }
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="w-full sm:w-[540px] md:w-[620px] lg:w-[680px] shrink-0 snap-start bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-xl shadow-slate-100 flex flex-col justify-between hover:border-orange-300 transition-all"
+                  >
+                    <div>
+                      {/* Top Header of Card */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-8 h-8 rounded-lg bg-orange-600 text-white font-black text-xs flex items-center justify-center shadow-md shadow-orange-500/20">
+                            0{idx + 1}
+                          </span>
+                          <span className="text-xs font-black uppercase tracking-wider text-slate-900">
+                            {item.phase} • {item.period}
                           </span>
                         </div>
+                        <span className="text-xs font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
+                          Official Chronicle
+                        </span>
                       </div>
-                    );
-                  }
-                )}
+
+                      <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug mb-2">
+                        {item.title}
+                      </h4>
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-500 mb-6">
+                        <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                        <span>{item.subtitle}</span>
+                      </div>
+
+                      <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8">
+                        {item.narrative}
+                      </p>
+                    </div>
+
+                    {/* Metrics Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-6 border-t border-slate-100 bg-slate-50/80 -mx-8 -mb-8 sm:-mx-10 sm:-mb-10 p-6 sm:p-8 rounded-b-3xl">
+                      {item.metrics.map((m, mIdx) => (
+                        <div key={mIdx} className="bg-white p-3 rounded-xl border border-slate-200/60 shadow-xs">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                            {m.label}
+                          </span>
+                          <span className="text-xs sm:text-sm font-extrabold text-slate-800">
+                            {m.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Bottom Section: Core Philosophy Cards */}
-            <div className="pt-10 border-t border-slate-200/80">
+            {/* 4. Core Educational Philosophy Cards */}
+            <div className="pt-12 border-t border-slate-200">
               <div className="text-center mb-12">
                 <span className="text-xs font-bold text-orange-600 tracking-widest uppercase mb-2 block">
-                  {about.tag || "Our Core Principles"}
+                  {about.tag || "Core Educational Philosophy"}
                 </span>
                 <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
                   {about.title}
@@ -512,6 +593,7 @@ export default function Home() {
                 })}
               </div>
             </div>
+
           </div>
         </section>
 
