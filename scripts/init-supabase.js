@@ -26,8 +26,12 @@ const defaultFullData = {
     ]
   },
   about: {
-    tag: "Our Philosophy",
+    tag: "Our Philosophy & Story",
     title: "Why Choose Prof. MVS Koteswara Rao Memorial School?",
+    historyTag: "A Small Initiative for a Better Society",
+    historyTitle: "Our Genesis, Ideology & Milestones",
+    historySubtitle:
+      "Sponsored by AUASD (Andhra University Alumni for Sustainable Development) — Started with a noble resolve to pay back to society through accessible, high-standard schooling in Guntur.",
     cards: [
       {
         id: "a1",

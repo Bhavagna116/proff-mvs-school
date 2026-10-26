@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -15,7 +15,15 @@ import {
   Award,
   Users,
   Menu,
-  X
+  X,
+  ChevronLeft,
+  ChevronRight,
+  GraduationCap,
+  Building2,
+  Sparkles,
+  Target,
+  Library,
+  HeartHandshake
 } from "lucide-react";
 import {
   cmsStore,
@@ -30,6 +38,7 @@ import {
   ContactSectionData,
   defaultHero,
   defaultAbout,
+  defaultMilestones,
   defaultAcademics,
   defaultSupport,
   defaultContact,
@@ -45,6 +54,15 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentBg, setCurrentBg] = useState(0);
   const [showPopup, setShowPopup] = useState(true);
+
+  const timelineScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollTimeline = (direction: "left" | "right") => {
+    if (timelineScrollRef.current) {
+      const scrollAmount = direction === "left" ? -440 : 440;
+      timelineScrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
 
   // Dynamic CMS state
   const [hero, setHero] = useState<HeroSectionData>(defaultHero);
@@ -259,34 +277,240 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3. Core Values & About */}
-        <section id="about" className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">{about.tag || "Our Philosophy"}</h2>
-              <h3 className="text-4xl font-extrabold text-slate-900">{about.title}</h3>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {about.cards.map((card, idx) => {
-                const bgClass =
-                  card.color === "orange" ? "bg-orange-100 text-orange-600" :
-                  card.color === "red" ? "bg-red-100 text-red-600" :
-                  card.color === "indigo" ? "bg-indigo-100 text-indigo-600" :
-                  card.color === "emerald" ? "bg-emerald-100 text-emerald-600" :
-                  card.color === "purple" ? "bg-purple-100 text-purple-600" :
-                  "bg-blue-100 text-blue-600";
+        {/* 3. Core Values & About with Scrolling History Journey */}
+        <section id="about" className="py-24 bg-gradient-to-b from-white via-orange-50/20 to-white relative overflow-hidden">
+          {/* Subtle decorative background blur glow */}
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-r from-orange-200/20 via-pink-200/20 to-purple-200/20 blur-3xl pointer-events-none -z-10" />
 
-                return (
-                  <div key={card.id || idx} className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl hover:shadow-slate-200 transition-all duration-300 hover:-translate-y-1">
-                    <div className={`w-14 h-14 ${bgClass} rounded-2xl flex items-center justify-center mb-6`}>
-                      {idx === 0 ? <BookOpen className="w-7 h-7" /> : idx === 1 ? <Heart className="w-7 h-7" /> : <Award className="w-7 h-7" />}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Top Story Header */}
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-100/80 border border-orange-200 text-orange-700 text-xs font-extrabold uppercase tracking-widest mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-orange-500" />
+                {about.historyTag || "A Small Initiative for a Better Society"}
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
+                {about.historyTitle || "Our Genesis, Ideology & Milestones"}
+              </h2>
+              <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+                {about.historySubtitle ||
+                  "Sponsored by AUASD (Andhra University Alumni for Sustainable Development) — Born from a sacred conviction to pay back to society through high-quality, accessible education."}
+              </p>
+            </div>
+
+            {/* Horizontal Scrolling History Showcase */}
+            <div className="relative mb-20">
+              {/* Controls Header: Status & Arrows */}
+              <div className="flex items-center justify-between mb-4 px-1">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                  <span>Interactive Story Reel • Swipe or Scroll Horizontally</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => scrollTimeline("left")}
+                    aria-label="Scroll left"
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 hover:text-orange-600 hover:border-orange-400 hover:bg-orange-50 flex items-center justify-center shadow-md transition-all active:scale-90 cursor-pointer"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollTimeline("right")}
+                    aria-label="Scroll right"
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 hover:text-orange-600 hover:border-orange-400 hover:bg-orange-50 flex items-center justify-center shadow-md transition-all active:scale-90 cursor-pointer"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Scroll Track */}
+              <div
+                ref={timelineScrollRef}
+                className="flex gap-6 overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-0"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                {(about.milestones && about.milestones.length > 0 ? about.milestones : defaultMilestones).map(
+                  (m, idx) => {
+                    const colorStyles =
+                      m.color === "orange"
+                        ? {
+                            badge: "bg-orange-100 text-orange-700 border-orange-200",
+                            iconBg: "bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-orange-500/20",
+                            border: "hover:border-orange-400",
+                            dot: "bg-orange-500"
+                          }
+                        : m.color === "blue"
+                        ? {
+                            badge: "bg-blue-100 text-blue-700 border-blue-200",
+                            iconBg: "bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-blue-500/20",
+                            border: "hover:border-blue-400",
+                            dot: "bg-blue-500"
+                          }
+                        : m.color === "emerald"
+                        ? {
+                            badge: "bg-emerald-100 text-emerald-700 border-emerald-200",
+                            iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-emerald-500/20",
+                            border: "hover:border-emerald-400",
+                            dot: "bg-emerald-500"
+                          }
+                        : m.color === "purple"
+                        ? {
+                            badge: "bg-purple-100 text-purple-700 border-purple-200",
+                            iconBg: "bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-purple-500/20",
+                            border: "hover:border-purple-400",
+                            dot: "bg-purple-500"
+                          }
+                        : m.color === "amber"
+                        ? {
+                            badge: "bg-amber-100 text-amber-700 border-amber-200",
+                            iconBg: "bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-amber-500/20",
+                            border: "hover:border-amber-400",
+                            dot: "bg-amber-500"
+                          }
+                        : {
+                            badge: "bg-rose-100 text-rose-700 border-rose-200",
+                            iconBg: "bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-rose-500/20",
+                            border: "hover:border-rose-400",
+                            dot: "bg-rose-500"
+                          };
+
+                    return (
+                      <div
+                        key={m.id || idx}
+                        className={`w-[320px] sm:w-[380px] md:w-[440px] shrink-0 snap-start bg-white rounded-3xl p-7 border border-slate-200 shadow-xl shadow-slate-100/70 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5 flex flex-col justify-between group ${colorStyles.border}`}
+                      >
+                        <div>
+                          {/* Card Top: Step & Badge */}
+                          <div className="flex items-center justify-between gap-3 mb-5">
+                            <span
+                              className={`text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full border shadow-sm ${colorStyles.badge}`}
+                            >
+                              {m.badge}
+                            </span>
+                            <span className="text-xs font-black text-slate-400">
+                              0{idx + 1} / 06
+                            </span>
+                          </div>
+
+                          {/* Icon & Subtitle Tag */}
+                          <div className="flex items-center gap-3 mb-3">
+                            <div
+                              className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg ${colorStyles.iconBg}`}
+                            >
+                              {idx === 0 ? (
+                                <GraduationCap className="w-5 h-5" />
+                              ) : idx === 1 ? (
+                                <HeartHandshake className="w-5 h-5" />
+                              ) : idx === 2 ? (
+                                <Target className="w-5 h-5" />
+                              ) : idx === 3 ? (
+                                <Building2 className="w-5 h-5" />
+                              ) : idx === 4 ? (
+                                <Library className="w-5 h-5" />
+                              ) : (
+                                <Sparkles className="w-5 h-5" />
+                              )}
+                            </div>
+                            <span className="text-xs font-bold text-orange-600 uppercase tracking-wider">
+                              {m.tag}
+                            </span>
+                          </div>
+
+                          {/* Title & Subtitle */}
+                          <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug mb-1">
+                            {m.title}
+                          </h3>
+                          {m.subtitle && (
+                            <p className="text-xs font-bold text-slate-500 mb-4">
+                              {m.subtitle}
+                            </p>
+                          )}
+
+                          {/* Narrative description */}
+                          <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                            {m.description}
+                          </p>
+
+                          {/* Optional highlight quote */}
+                          {m.quote && (
+                            <div className="bg-amber-50/80 border-l-4 border-amber-400 p-3 rounded-r-xl mb-4">
+                              <p className="text-xs font-extrabold text-amber-900 italic">
+                                &ldquo;{m.quote}&rdquo;
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Points list */}
+                          {m.points && m.points.length > 0 && (
+                            <div className="space-y-2 mt-4 pt-4 border-t border-slate-100">
+                              {m.points.map((pt, pIdx) => (
+                                <div key={pIdx} className="flex items-start gap-2 text-xs font-semibold text-slate-700">
+                                  <span className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${colorStyles.dot}`} />
+                                  <span>{pt}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Card bottom bar */}
+                        <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-400">
+                          <span>MVS Memorial School Story</span>
+                          <span className="group-hover:translate-x-1 transition-transform text-orange-600 font-extrabold">
+                            →
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+            </div>
+
+            {/* Bottom Section: Core Philosophy Cards */}
+            <div className="pt-10 border-t border-slate-200/80">
+              <div className="text-center mb-12">
+                <span className="text-xs font-bold text-orange-600 tracking-widest uppercase mb-2 block">
+                  {about.tag || "Our Core Principles"}
+                </span>
+                <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                  {about.title}
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {about.cards.map((card, idx) => {
+                  const bgClass =
+                    card.color === "orange"
+                      ? "bg-orange-100 text-orange-600"
+                      : card.color === "red"
+                      ? "bg-red-100 text-red-600"
+                      : card.color === "indigo"
+                      ? "bg-indigo-100 text-indigo-600"
+                      : card.color === "emerald"
+                      ? "bg-emerald-100 text-emerald-600"
+                      : card.color === "purple"
+                      ? "bg-purple-100 text-purple-600"
+                      : "bg-blue-100 text-blue-600";
+
+                  return (
+                    <div
+                      key={card.id || idx}
+                      className="p-8 rounded-3xl bg-white border border-slate-200/80 hover:shadow-xl hover:shadow-slate-200 transition-all duration-300 hover:-translate-y-1 shadow-sm"
+                    >
+                      <div className={`w-14 h-14 ${bgClass} rounded-2xl flex items-center justify-center mb-6`}>
+                        {idx === 0 ? <BookOpen className="w-7 h-7" /> : idx === 1 ? <Heart className="w-7 h-7" /> : <Award className="w-7 h-7" />}
+                      </div>
+                      <h4 className="text-xl font-bold text-slate-900 mb-3">{card.title}</h4>
+                      <p className="text-slate-600 leading-relaxed text-sm">{card.description}</p>
                     </div>
-                    <h4 className="text-xl font-bold text-slate-900 mb-3">{card.title}</h4>
-                    <p className="text-gray-600 leading-relaxed">{card.description}</p>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
